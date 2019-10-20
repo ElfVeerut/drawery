@@ -25,5 +25,17 @@
     </head>
     <body style="background-color:rgb(50, 54, 57)">
         <i class="material-icons" style="font-size: 200px; color:white; text-align:center; display:block; margin-top:200px;">fingerprint</i>
-        <<h3 style="text-align:center; font-size:40px; color:white; margin-top:20px">Scan the Finger</h3>
+        <h3 style="text-align:center; font-size:40px; color:white; margin-top:20px">Scan the Finger</h3>
+        <form  id='numsubmit' action="http://127.0.0.1:5000/enroll" method="post">
+            <input type='hidden' id='num' name="num" value='1'>
+        </form>
     </body>
+    <script type='text/javascript'>
+    var x=1;
+    if(x==1){
+        document.getElementById('numsubmit').submit();
+        x=0;
+        }
+    console.log(x)
+    </script>
+</html>
