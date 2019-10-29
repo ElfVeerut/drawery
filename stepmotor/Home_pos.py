@@ -10,9 +10,8 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 class HomePosition(threading.Thread):
-    def __init__(self,name,dir_motor,step_motor,pos_home,CW_CCW):
+    def __init__(self,dir_motor,step_motor,pos_home,CW_CCW):
         threading.Thread.__init__(self)
-        self.name = name
         self.dir_motor = dir_motor
         self.step_motor = step_motor
         self.pos_home = pos_home
@@ -26,20 +25,22 @@ class HomePosition(threading.Thread):
     def run(self): 
         try:
             GPIO.output(self.dir_motor,self.CW_CCW)
-            temp = self.limit_switch()
-            while not self.limit_switch(): 
+            while True:
                 GPIO.output(self.step_motor,GPIO.HIGH)
                 sleep(.001)
                 GPIO.output(self.step_motor,GPIO.LOW)
                 sleep(.001)
+                if self.limit_switch():
+                    sleep(0.01)
+                    if self.limit_switch():
+                        break
+            return True
         except:
             print(self.limit_switch())
-        sleep(0.05)
-        if temp == self.limit_switch():
-            return True
-x = HomePosition('x',19,26,4,CW)
-y = HomePosition('y',20,21,17,CCW)
-z = HomePosition('z',13,6,18,CCW)
+        
+x = HomePosition(19,26,4,CW)
+y = HomePosition(20,21,17,CCW)
+z = HomePosition(13,6,18,CCW)
 
 x.start()
 y.start()
