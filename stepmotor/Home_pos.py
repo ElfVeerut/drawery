@@ -33,6 +33,7 @@ class HomePosition(threading.Thread):
                 sleep(.001)
         except:
             print(self.limit_switch())
+        sleep(0.05)
         if temp == self.limit_switch():
             return True
 x = HomePosition(19,26,4,CW)
