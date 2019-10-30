@@ -5,12 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>Fingerprint Register</title>
-        <script type = "text/javascript">
-            function scanFingerprint(){
-                if 
-                alert("Place your index finger on the scanner")
-            }
-        </script>
+        
         <style>
             .btn{
                 background-color:gray; 
@@ -29,7 +24,22 @@
                 background-color: rgb(255, 255, 255);}
         </style>
     </head>
+    
     <body style="background-color:rgb(50, 54, 57)">
         <i class="material-icons" style="font-size: 200px; color:white; text-align:center; display:block; margin-top:200px;">fingerprint</i>
         <h3 style="text-align:center; font-size:40px; color:white; margin-top:20px">Scan to Confirm</h3>
+        <h2 style="text-align:center; font-size:20px; color:white; margin-top:10p">Place Your Index Finger Then Lift and Place Again</h3>
+        <form  id='numsubmit2' action="http://127.0.0.1:5000/register" method="post">
+            <input type='hidden' onclick='this.disabled = true' id='num2' name="num2" value='1'>
+        </form>
     </body>
+    
+    <script type = "text/javascript">
+        function formAutoSubmit(){
+            var frm = document.getElementById('numsubmit2');
+            frm.submit();
+        }
+        window.onload = formAutoSubmit;
+            
+    </script>
+</html>

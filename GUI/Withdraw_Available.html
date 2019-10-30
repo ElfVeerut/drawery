@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta charset="utf-8" />
-        <title>Deposit Choice</title>
+        <title>withdrawal choice</title>
         <style>
             .btn{
                 background-color:gray; 
@@ -61,7 +60,7 @@
     </head>
 
     <body style="background-color:rgb(50, 54, 57)">          
-        <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:20px">Deposit</h1>
+        <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:20px">Withdrawal</h1>
         <h3 style="text-align:center; font-size:40px; color:white; margin-top:20px">Choose Drawer</h3>
         <div style="text-align:center;"> 
             <button type="button" class="btn" style="margin-right:5px" id="box1">box1</button>
@@ -82,7 +81,7 @@
         </div>
         <script type = "text/javascript">
             var x = 0;
-            var y = [1,0,0,0];
+            var y = [];
             var i;
             var j;
             var box = "box"
@@ -96,34 +95,33 @@
             }
             console.log(box)
             
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText);
-                        me = JSON.parse(this.responseText);
-                        console.log(me);                   
-                        for (j=0; j<me.length; j++){
-                            console.log(j);
-                            y[j]=me[j];
-                        }
-                        console.log(y);
-                        for (i=0; i<y.length; i++){
-                            console.log(y[i]);
-                            if (y[i] == 1){
-                                box+=i+1;
-                                console.log(box);
-                                document.getElementById(box).style.backgroundColor = 'rgb(50, 54, 57)';
-                                document.getElementById(box).style.borderColor = 'rgb(50, 54, 57)';
-                                document.getElementById(box).style.color = 'rgb(50, 54, 57)'
-                                document.getElementById(box).pointerEvents = "none";
-                                document.getElementById(box).pointer = "default";
-                                box = 'box';
-                            }
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    me = JSON.parse(this.responseText);
+                    console.log(me);                   
+                    for (j=0; j<me.length; j++){
+                        console.log(j);
+                        y[j]=me[j];
+                    }
+                    console.log(y);
+                    for (i=0; i<y.length; i++){
+                        console.log(y[i]);
+                        if (y[i] == 1){
+                            box+=i+1;
+                            console.log(box);
+                            document.getElementById(box).style.backgroundColor = 'rgb(50, 54, 57)';
+                            document.getElementById(box).style.borderColor = 'rgb(50, 54, 57)';
+                            document.getElementById(box).style.color = 'rgb(50, 54, 57)'
+                            document.getElementById(box).pointerEvents = "none";
+                            document.getElementById(box).pointer = "default";
+                            box = 'box';
                         }
                     }
                 }
-                console.log(y);
-                
-            xhttp.open("GET", "http://127.0.0.1:5000/name_deposit", true);
+            }
+            console.log(y); 
+            xhttp.open("GET", "http://127.0.0.1:5000/name_withdrawal", true);
             xhttp.send();          
         </script>
     </body>
