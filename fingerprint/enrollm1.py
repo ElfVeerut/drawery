@@ -31,10 +31,10 @@ def enroll():
         positionNumber = result[0]
      
         if ( positionNumber >= 0 ):
-            return (False)
             print('Template already exists at position #' + str(positionNumber))
+            return False
             exit(0)
-        return True
+        #return True
     
         print('Remove finger...')
         time.sleep(2)
@@ -50,8 +50,9 @@ def enroll():
      
         ## Compares the charbuffers
         if ( finger.compareCharacteristics() == 0 ):
+            
             raise Exception('Fingers do not match')
-     
+            return False
         ## Creates a template
         finger.createTemplate()
      
@@ -59,8 +60,10 @@ def enroll():
         positionNumber = finger.storeTemplate()
         print('Finger enrolled successfully!')
         print('New template position #' + str(positionNumber))
-     
+        return True
     except Exception as e:
         print('Operation failed!')
         print('Exception message: ' + str(e))
+        return False
         exit(1)
+        

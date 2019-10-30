@@ -44,26 +44,24 @@ def check():
 
         positionNumber = result[0]
 
-        accuracyScore = result[1]
+        #accuracyScore = result[1]
 
 
         if ( positionNumber == -1 ):
-            return (False)
             print('no match found!')
+            return (positionNumber)
 
 
         else:
-            return (True)
             print('Found template at position #' + str(positionNumber))
-
+            return (positionNumber)
             
 
 
 
     except Exception as e:
-        return (False)
         print('Operation failed!')
-
         print('Exception message: ' + str(e))
+        return False
+        exit(1)
 
-        exit(1)   
