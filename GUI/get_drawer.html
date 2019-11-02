@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>deposit page</title>
+        <title>getting drawer</title>
         <style>
             .btn{
                 background-color:gray; 
@@ -34,19 +34,44 @@
                 text-align:center;
 
             }
+            .lds-dual-ring:after {
+              display: inline-block;
+              width: 64px;
+              height: 64px;
+              content: " ";
+              display: block;
+              width: 80px;
+              height: 80px;
+              margin: 1px;
+              border-radius: 50%;
+              border: 5px solid #fff;
+              border-color: #fff transparent #fff transparent;
+              animation: lds-dual-ring 1.2s linear infinite;
+              margin:0 auto;
+            
+            }
+            @keyframes lds-dual-ring {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
         </style>
     </head>
 
         <body style="background-color:rgb(50, 54, 57)">    
-            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Register</h1> 
-            <form   action="http://127.0.0.1:5000/register_name" method="post">
-                <input class="nameTag" type="text" name="FirstName" placeholder="Name" >
+            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Getting drawer...</h1>
+            <div class="lds-dual-ring"></div>
+            <!--<form   action="http://127.0.0.1:5000/name" method="post">-->
+                <!-- <input class="nameTag" type="text" name="getdrawer" placeholder="getdrawer" > -->
             
                 <div style="text-align:center;">
-                    <a href="http://127.0.0.1:5000/" style="text-decoration:none">
+                    <!--<a href="http://127.0.0.1:5000/" style="text-decoration:none">-->
                         <button type="button" class="btn" style="margin-top:100px;">Cancel</button>
                     </a>
-                    <button type="submit" class="btn" style="margin-top:100px;">Continue</button>
+                    
                 </div>
             </form> 
         </body>

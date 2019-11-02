@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>deposit page</title>
+        <title>place item</title>
         <style>
             .btn{
                 background-color:gray; 
@@ -38,17 +38,23 @@
     </head>
 
         <body style="background-color:rgb(50, 54, 57)">    
-            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Register</h1> 
-            <form   action="http://127.0.0.1:5000/register_name" method="post">
-                <input class="nameTag" type="text" name="FirstName" placeholder="Name" >
-            
+            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Please place your item</h1> 
+            <form id='weightsubmit'  action="http://127.0.0.1:5000/weight_check" method="post">
+                 <input type='hidden' onclick='this.disabled = true' id='weight' name="weight" value='1'>
+            </form>
                 <div style="text-align:center;">
-                    <a href="http://127.0.0.1:5000/" style="text-decoration:none">
-                        <button type="button" class="btn" style="margin-top:100px;">Cancel</button>
+                    <!--<a href="http://127.0.0.1:5000/" style="text-decoration:none">-->
+                        <button type="button" class="btn" style="margin-top:100px;">Done</button>
                     </a>
-                    <button type="submit" class="btn" style="margin-top:100px;">Continue</button>
+                    
                 </div>
             </form> 
         </body>
-        
-    </html>
+    <script type='text/javascript'>
+    function formAutoSubmit(){
+        var frm = document.getElementById('weightsubmit');
+        frm.submit();
+    }
+    window.onload = formAutoSubmit;
+    </script>
+</html>
