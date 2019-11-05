@@ -64,4 +64,3 @@ def check():
         print('Exception message: ' + str(e))
         return False
         exit(1)
-
