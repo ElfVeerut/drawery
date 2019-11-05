@@ -64,64 +64,65 @@
         <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:20px">Deposit</h1>
         <h3 style="text-align:center; font-size:40px; color:white; margin-top:20px">Choose Drawer</h3>
         <div style="text-align:center;"> 
-            <button type="button" class="btn" style="margin-right:5px" id="box1">box1</button>
-            <button type="button" class="btn" style="margin-left:5px" id="box2">box2</button>
+            <button type="button" class="btn" style="margin-right:5px" id="box1" value="1" onclick="valueBox1()">box1</button>
+            <button type="button" class="btn" style="margin-left:5px" id="box2" value="2" onclick="valueBox2()">box2</button>
         </div>
         <!--<div style="text-align:center; margin-top:15px;">
             <button type="button" class="btn" style="margin-right:5px" id="box3">box3</button>
             <button type="button" class="btn" style="margin-left:5px" id="box4">box4</button>            
         </div>-->
         <br>
-        <a href="fingerprint_register.html" style="text-decoration:none; text-align:center;">
-            <button type="button" class="btn" style="margin-top:100px; display:block" onclick="buttonEnable()">Continue</button>
-        </a>
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <div class="loader"></div>
-            </div>
-        </div>
+        <form action="http://127.0.0.1:5000/getData" method="POST" style="text-decoration:none; text-align:center;">
+            <button type="submit" class="btn" style="margin-top:100px; display:block" onclick="sendData()" value="continue">Continue</button>
+        </form>
         <script type = "text/javascript">
-            var x = 0;
+            var drawerNum = 0;
             var y = [];
             var i;
             var j;
             var box = "box"
-            var modal = document.getElementById("myModal");
             var xhttp = new XMLHttpRequest();
-
-            function loading(){
-                if (x==1){
-                    modal.style.display = "block";
-                }
-            }
-            console.log(box)
             
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText);
-                        me = JSON.parse(this.responseText);
-                        console.log(me);                   
-                        for (j=0; j<me.length; j++){
-                            console.log(j);
-                            y[j]=me[j];
-                        }
-                        console.log(y);
-                        for (i=0; i<y.length; i++){
-                            console.log(y[i]);
-                            if (y[i] == 1){
-                                box+=i+1;
-                                console.log(box);
-                                document.getElementById(box).style.backgroundColor = 'rgb(50, 54, 57)';
-                                document.getElementById(box).style.borderColor = 'rgb(50, 54, 57)';
-                                document.getElementById(box).style.color = 'rgb(50, 54, 57)'
-                                document.getElementById(box).pointerEvents = "none";
-                                document.getElementById(box).pointer = "default";
-                                box = 'box';
-                            }
+            function valueBox1(){
+                drawerNum=document.getElementById("box1").value
+                console.log(drawerNum)
+            }
+            function valueBox2(){
+                drawerNum=document.getElementById("box2").value 
+                console.log(drawerNum)
+            }
+            function sendData(){
+                var drawerNumJSON=JSON.jsonify(drawerNum)
+                console.log(drawerNumJSON)
+            }    
+            console.log(drawerNum)
+            
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    me = JSON.parse(this.responseText);
+                    console.log(me);                   
+                    for (j=0; j<me.length; j++){
+                        console.log(j);
+                        y[j]=me[j];
+                    }
+                    console.log(y);
+                    for (i=0; i<y.length; i++){
+                        console.log(y[i]);
+                        if (y[i] == 1){
+                            box+=i+1;
+                            console.log(box);
+                            document.getElementById(box).style.backgroundColor = 'rgb(50, 54, 57)';
+                            document.getElementById(box).style.borderColor = 'rgb(50, 54, 57)';
+                            document.getElementById(box).style.color = 'rgb(50, 54, 57)'
+                            document.getElementById(box).pointerEvents = "none";
+                            document.getElementById(box).pointer = "default";
+                            box = 'box';
                         }
                     }
                 }
-                console.log(y);
+            }
+            console.log(y);
                 
             xhttp.open("GET", "http://127.0.0.1:5000/box_check_public_deposit", true);
             xhttp.send();          
