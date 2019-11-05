@@ -1,8 +1,9 @@
-from flask import Flask, redirect, url_for, request, render_template, jsonify
-import ast, json, os, webbrowser
+from flask import Flask, redirect, url_for, request, render_template, jsonify, request
+import ast, json, os, webbrowser,csv
 from enrollm1 import enroll
 from checkm1 import check
 from weight_check import checkWeight
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -41,14 +42,6 @@ def checkFinger():
 def noFinger():
     return render_template('regis_adminpass.html')
 
-#@app.route('/check_finger_deposit')
-#def checkFingerDeposit():
-#    return render_template('fingerprint_deposit.html')
-
-#@app.route('/check_finger_withdraw')
-#def checkFingerWithdraw():
-#    return render_template('fingerprint_withdrawal.html')
-
 @app.route('/public_or_private')
 def PublicOrPrivate():
     box = [1,1,1,1]
@@ -61,15 +54,11 @@ def PublicOrPrivate():
 def nameDeposit():
     res = ''
     nc=[0,0,1,1]
-#   print("helo")
     if request.method == 'POST':
         name = request.form['FirstName']
-        res += name
-        #print (res)
+        res += name       
         return render_template('Deposit_Avaible.html')
-        #return res
     if request.method == 'GET':
-        #print(json.dumps(nc))
         return json.dumps(nc)
         
 @app.route('/box_check_dp')
@@ -84,7 +73,6 @@ def check_dp():
 def public_deposit():
     public_box = [0,1]
     if request.method == 'GET':
-        #print (json.dumps(public_box))
         return json.dumps(public_box)
         
 @app.route('/box_check_pp')
@@ -99,10 +87,9 @@ def check_pp():
 def private_deposit():
     private_box = [1,0]
     if request.method == 'GET':        
-        #print (json.dumps(private_box))
         return json.dumps(private_box)
                 
-@app.route('/name_withdrawal', methods = ['GET','POST'])
+@app.route('/name_withdrawal', methods = ['GET'])
 def nameWithdrawal():
     name_withdraw = [0,1,1,0]
     if request.method == 'GET':
@@ -125,15 +112,15 @@ def enroll_():
 def check_():
     if request.method == 'POST':
         name = request.form['num']
+        print(name)
         if name == '1':
-            print(type(check()))
             if check()!= (-1):
                 return render_template('WithdrawOrDeposit.html')
             else:
                 return render_template('regis_adminpass.html')
     return ('error')
 
-@app.route('/admin_password', methods = ['GET','POST'])
+@app.route('/admin_password', methods = ['POST'])
 def adminPassword():
     SetPassword = '12345'
     if request.method == 'POST':
@@ -144,20 +131,33 @@ def adminPassword():
         else:
             return render_template('')
     
-@app.route('/register_name', methods = ['GET','POST'])
+@app.route('/register_name', methods = ['POST'])
 def getRegisterName():
     if request.method == 'POST':
         register_name = request.form['FirstName']
         print (register_name)
         return render_template('fingerprint_register.html')
     
-@app.route('/weight_check', methods = ['GET','POST'])
+@app.route('/weight_check', methods = ['POST'])
 def check_weight():
     if request.method == 'POST':
         checkweight = request.form['weight']
         if checkweight == '1':
             checkWeight()
             return render_template('Place_item.html')
+        
+@app.route('/getData', methods = ['POST'])
+def det_data():
+    if request.method == 'POST':
+        data = (request.json)
+        print('fdsfsd')
+        print(jsonify(data))
+        return ('fdsfdsf')
+    
+#@app.route('/track', methods = ['POST'])
+#def track_info():
+#    if request.method == 'POST':
+        
            
         
         
