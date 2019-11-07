@@ -64,19 +64,19 @@
         <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:20px">Deposit</h1>
         <h3 style="text-align:center; font-size:40px; color:white; margin-top:20px">Choose Drawer</h3>
         <div style="text-align:center;"> 
-            <button type="button" class="btn" style="margin-right:5px" id="box1" value="1" onclick="valueBox1()">box1</button>
-            <button type="button" class="btn" style="margin-left:5px" id="box2" value="2" onclick="valueBox2()">box2</button>
+            <button type="button" class="btn" style="margin-right:5px" id="box1" value="3" onclick="valueBox1()">box1</button>
+            <button type="button" class="btn" style="margin-left:5px" id="box2" value="4" onclick="valueBox2()">box2</button>
         </div>
         <!--<div style="text-align:center; margin-top:15px;">
             <button type="button" class="btn" style="margin-right:5px" id="box3">box3</button>
             <button type="button" class="btn" style="margin-left:5px" id="box4">box4</button>            
         </div>-->
         <br>
-        <form action="http://127.0.0.1:5000/getData" method="POST" style="text-decoration:none; text-align:center;">
-            <button type="submit" class="btn" style="margin-top:100px; display:block" onclick="sendData()" value="continue">Continue</button>
+        <form action="http://127.0.0.1:5000/getDataPublic" method="POST" style="text-decoration:none; text-align:center;">
+            <input type="hidden" onclick="this.disabled=true" id="data" name="data" value="">
+            <button type="submit" class="btn" style="margin-top:100px; display:block" value="continue">Continue</button>
         </form>
         <script type = "text/javascript">
-            var drawerNum = 0;
             var y = [];
             var i;
             var j;
@@ -84,18 +84,13 @@
             var xhttp = new XMLHttpRequest();
             
             function valueBox1(){
-                drawerNum=document.getElementById("box1").value
-                console.log(drawerNum)
+                document.getElementById("data").value=document.getElementById("box1").value
+                console.log(document.getElementById("data").value)
             }
             function valueBox2(){
-                drawerNum=document.getElementById("box2").value 
-                console.log(drawerNum)
+                document.getElementById("data").value=document.getElementById("box2").value 
+                console.log(document.getElementById("data").value)
             }
-            function sendData(){
-                var drawerNumJSON=JSON.jsonify(drawerNum)
-                console.log(drawerNumJSON)
-            }    
-            console.log(drawerNum)
             
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
