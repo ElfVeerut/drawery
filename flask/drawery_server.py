@@ -8,7 +8,7 @@ from weight_check import checkWeight
 #go_home()
 #sleep(0.5)
 #prepare_post()
-drawer = 0
+data = 0
 app = Flask(__name__)
 
 @app.route('/')
@@ -180,15 +180,17 @@ def check_weight():
 @app.route('/getDataPublic', methods = ['POST'])
 def get_data():
     if request.method == 'POST':
-        global drawer
+        global data
         data = request.form['data']
-        data = int(data)
         print(data)
         print(type(data))
-        drawer=data
         return ('fdsfdsf')
-get_data()
-print(drawer)
+    
+@app.route('/gta')
+def gta():
+    print(data)
+    return(data)
+        
 #@app.route('/track', methods = ['POST'])
 #def track_info():
 #    if request.method == 'POST':
