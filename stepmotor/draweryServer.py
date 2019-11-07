@@ -1,14 +1,25 @@
 from flask import Flask
 from time import sleep
-from FULL_1 import go_home , prepare_pos, go_to_locker , returnpos_to_locker , go_home2
+from FULL_1 import *
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-    n = int(input())
-    go_to_locker(n)
-    sleep(1) # code bam
-    returnpos_to_locker(n)
+def Hello():
+    public_box = [1,1]
+    x = HomePosition(19,26,4,CW)
+    y = HomePosition(20,21,17,CCW)
+    z = HomePosition(13,6,18,CW)
     go_home()
     prepare_pos()
-    return "DONE"
+    if public_box[0] == 0:
+        go_to_locker(3)
+        sleep(1)
+        returnpos_to_locker(3)
+        return ('sss')
+    elif public_box[1] == 0:
+        go_to_locker(4)
+        sleep(1)
+        returnpos_to_locker(4)
+        return('ssss')
+    else:
+        return ('error')
