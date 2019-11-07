@@ -1,22 +1,19 @@
 from flask import Flask, redirect, url_for, request, render_template, jsonify, request
 import ast, json, os, webbrowser,csv
+from time import sleep
 from enrollm1 import enroll
 from checkm1 import check
 from weight_check import checkWeight
 
+#go_home()
+#sleep(0.5)
+#prepare_post()
+drawer = 0
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('welcome.html')
-
-@app.route('/withdraw_or_deposit')
-def WithdrawOrDeposit():
-    return render_template('WithdrawOrDeposit.html')
-
-@app.route('/unavailable')
-def unavailable():
-    return render_template ('NoAvailible.html')
 
 @app.route('/deposit_available')
 def available():
@@ -44,7 +41,7 @@ def noFinger():
 
 @app.route('/public_or_private')
 def PublicOrPrivate():
-    box = [1,1,1,1]
+    box = [0,0,0,0]
     if box == [1,1,1,1]:
         return render_template('NoAvailableForEveryDrawer.html')
     else:
@@ -64,10 +61,27 @@ def nameDeposit():
 @app.route('/box_check_dp')
 def check_dp():
     public_box = [0,1]
-    if public_box == [1,1]:
-        return render_template('NoAvailibleDrawer.html')
+#    x = HomePosition(19,26,4,CW)
+#    y = HomePosition(20,21,17,CWW)
+#    z = HomePosition(13,6,18,CW)
+    if public_box[0] == 0:
+#        go_to_locker(3)
+#        sleep(1)
+#        returnpos_to_locker(3)
+#        go_home()
+#        prepare_pos()
+        return('returning box1') #return page GUI
+        
+    elif public_box[1] == 0:
+#        go_to_locker(4)
+#        sleep(1)
+#        returnpos_to_locker(4)
+#        go_home()
+#        prepare_pos()
+        return ('returning box2') #return page GUI
+    
     else:
-        return render_template('Deposit_Public_Available.html')
+        return render_template('NoAvailibleDrawer.html')
                
 @app.route('/box_check_public_deposit', methods = ['GET','BOX'])
 def public_deposit():
@@ -78,10 +92,27 @@ def public_deposit():
 @app.route('/box_check_pp')
 def check_pp():
     private_box = [1,0]
-    if private_box == [1,1]:
-        return render_template('NoAvailibleDrawer.html')
+#    x = HomePosition(19,26,4,CW)
+#    y = HomePosition(20,21,17,CWW)
+#    z = HomePosition(13,6,18,CW)
+    if private_box[0] == 0:
+#        go_to_locker(2)
+#        sleep(1)
+#        returnpos_to_locker(2)
+#        go_home()
+#        prepare_pos()
+        return('returning box3') #return page GUI
+        
+    elif private_box[1] == 0:
+#        go_to_locker(1)
+#        sleep(1)
+#        returnpos_to_locker(1)
+#        go_home()
+#        prepare_pos()
+        return ('returning box4') #return page GUI
+    
     else:
-        return render_template('Deposit_Private_Available.html')
+        return render_template('NoAvailibleDrawer.html')
         
 @app.route('/box_check_private_deposit', methods = ['GET','POST'])
 def private_deposit():
@@ -146,14 +177,18 @@ def check_weight():
             checkWeight()
             return render_template('Place_item.html')
         
-@app.route('/getData', methods = ['POST'])
-def det_data():
+@app.route('/getDataPublic', methods = ['POST'])
+def get_data():
     if request.method == 'POST':
-        data = (request.json)
-        print('fdsfsd')
-        print(jsonify(data))
+        global drawer
+        data = request.form['data']
+        data = int(data)
+        print(data)
+        print(type(data))
+        drawer=data
         return ('fdsfdsf')
-    
+get_data()
+print(drawer)
 #@app.route('/track', methods = ['POST'])
 #def track_info():
 #    if request.method == 'POST':
