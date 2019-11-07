@@ -1,20 +1,26 @@
 from flask import Flask
 from time import sleep
-from FULL_1 import *
+from FULL_2_test_speed import *
 app = Flask(__name__)
+
+go_home()
+sleep(1)
+prepare_pos()
 
 @app.route('/')
 def Hello():
-    public_box = [1,1]
-    x = HomePosition(19,26,4,CW)
-    y = HomePosition(20,21,17,CCW)
-    z = HomePosition(13,6,18,CW)
-    go_home()
-    prepare_pos()
+    public_box = [0,1]
+    #x = HomePosition(19,26,4,CW)
+    #y = HomePosition(20,21,17,CCW)
+    #z = HomePosition(13,6,18,CW)
     if public_box[0] == 0:
         go_to_locker(3)
         sleep(1)
         returnpos_to_locker(3)
+        sleep(1)
+        go_home()
+        prepare_pos()
+        
         return ('sss')
     elif public_box[1] == 0:
         go_to_locker(4)
