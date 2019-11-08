@@ -8,7 +8,7 @@ from weight_check import checkWeight
 #go_home()
 #sleep(0.5)
 #prepare_post()
-data = 0
+data = '0'
 app = Flask(__name__)
 
 @app.route('/')
@@ -38,6 +38,10 @@ def checkFinger():
 @app.route('/no_finger_found')
 def noFinger():
     return render_template('regis_adminpass.html')
+
+@app.route('/return_item')
+def ReturnItem():
+    return render_template('return_drawer_deposit.html')
 
 @app.route('/public_or_private')
 def PublicOrPrivate():
@@ -183,13 +187,28 @@ def get_data():
         global data
         data = request.form['data']
         print(data)
-        print(type(data))
-        return ('fdsfdsf')
+        return render_template('get_drawer_deposit.html')
     
-@app.route('/gta')
-def gta():
+@app.route('/get_drawer', methods=['POST'])
+def get_drawers():
     print(data)
+    print(type(data))
+    data = int(data) 
+    if request.method == 'POST':
+#        name = request.form['getdrawer']
+#        print(name)
+        go_to_locker(data)
+        sleep(1)
+        returnpos_to_locker(data)
+        return render_template('Place_item.html')
+#    go_to_locker(2)
+#    sleep(1)
+#    returnpos_to_locker(2)
+#    go_home()
+#    prepare_pos()
+        
     return(data)
+
         
 #@app.route('/track', methods = ['POST'])
 #def track_info():
