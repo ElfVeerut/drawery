@@ -3,6 +3,7 @@
 
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>getting drawer</title>
         <style>
             .btn{
@@ -61,19 +62,26 @@
         </style>
     </head>
 
-        <body style="background-color:rgb(50, 54, 57)">    
-            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Getting drawer...</h1>
-            <div class="lds-dual-ring"></div>
-            <!--<form   action="http://127.0.0.1:5000/name" method="post">-->
-                <!-- <input class="nameTag" type="text" name="getdrawer" placeholder="getdrawer" > -->
+    <body style="background-color:rgb(50, 54, 57)">    
+        <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Getting drawer...</h1>
+        <div class="lds-dual-ring"></div>
+        <form id='getdata1' action="http://127.0.0.1:5000/get_drawer" method="post">
+            <input type="hidden" id="getdrawer" name='getdrawer' value="true">
+            <!--<button type="submit">bright</button>-->
+        </form>
             
-                <div style="text-align:center;">
-                    <!--<a href="http://127.0.0.1:5000/" style="text-decoration:none">-->
-                        <button type="button" class="btn" style="margin-top:100px;">Cancel</button>
-                    </a>
-                    
-                </div>
-            </form> 
-        </body>
-        
-    </html>
+        <div style="text-align:center;">
+            <!--<a href="http://127.0.0.1:5000/" style="text-decoration:none">-->
+                <button type="button" class="btn" style="margin-top:100px;">Cancel</button>
+            <!--</a>-->
+            
+        </div>
+    </body>
+    <script type="text/javascript">
+        function AutoSubmit(){
+            var frm1 = document.getElementById('getdata1');
+            frm1.submit();
+        }
+        window.onload = AutoSubmit;
+    </script>
+</html>

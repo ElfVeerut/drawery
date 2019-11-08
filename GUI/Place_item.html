@@ -36,25 +36,13 @@
             }
         </style>
     </head>
-
-        <body style="background-color:rgb(50, 54, 57)">    
-            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Please place your item</h1> 
-            <form id='weightsubmit'  action="http://127.0.0.1:5000/weight_check" method="post">
-                 <input type='hidden' onclick='this.disabled = true' id='weight' name="weight" value='1'>
-            </form>
-                <div style="text-align:center;">
-                    <!--<a href="http://127.0.0.1:5000/" style="text-decoration:none">-->
-                        <button type="button" class="btn" style="margin-top:100px;">Done</button>
-                    </a>
-                    
-                </div>
-            </form> 
-        </body>
-    <script type='text/javascript'>
-    function formAutoSubmit(){
-        var frm = document.getElementById('weightsubmit');
-        frm.submit();
-    }
-    window.onload = formAutoSubmit;
-    </script>
+    
+    <body style="background-color:rgb(50, 54, 57)">    
+        <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Please place your item</h1> 
+        <div style="text-align:center;">
+            <a href="http://127.0.0.1:5000/return_item" style="text-decoration:none">
+                <button type="button" class="btn" style="margin-top:100px;">Done</button>
+            </a>
+        </div>
+    </body>
 </html>
