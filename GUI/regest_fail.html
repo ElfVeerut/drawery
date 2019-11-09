@@ -39,16 +39,14 @@
 
         <body style="background-color:rgb(50, 54, 57)">    
             <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Register failed!</h1> 
-            <form   action="http://127.0.0.1:5000/name" method="post">
-                <!-- <input class="nameTag" type="text" name="FirstName" placeholder="Name" > -->
-            
-                <div style="text-align:center;">
-                    <a href="http://127.0.0.1:5000/" style="text-decoration:none">
-                        <button type="button" class="btn" style="margin-top:100px;"">Cancel</button>
-                    </a>
-                    <button type="submit" class="btn" style="margin-top:100px;"">Continue</button>
-                </div>
-            </form> 
+            <div style="text-align:center;">
+                <a href="http://127.0.0.1:5000/" style="text-decoration:none">
+                    <button type="button" class="btn" style="margin-top:100px;">Cancel</button>
+                </a>
+                <a href="http://127.0.0.1:5000/enroll_finger" style="text-decoration:none">
+                    <button type="submit" class="btn" style="margin-top:100px;">RETRY</button>
+                </a>
+            </div>
         </body>
         
     </html>

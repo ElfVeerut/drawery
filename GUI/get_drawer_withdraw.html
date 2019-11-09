@@ -20,7 +20,7 @@
                 background-color:rgb(161, 160, 160);
             }
             .btn:active {
-                background-color: rgb(255, 255, 255);
+                background-color: rgb(255, 255, 0);
             } 
             .container {
                 text-align: center;
@@ -65,8 +65,8 @@
     <body style="background-color:rgb(50, 54, 57)">    
         <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Getting drawer...</h1>
         <div class="lds-dual-ring"></div>
-        <form id='getdata1' action="http://127.0.0.1:5000/get_drawer" method="post">
-            <input type="hidden" id="getdrawer" name='getdrawer' value="true">
+        <form id='getwithdrawdata' action="http://127.0.0.1:5000/getWithdrawDrawer" method="post">
+            <input type="hidden" id="getwithdrawdrawer" name='getwithdrawdrawer' value="true">
         </form>
             
         <div style="text-align:center;">
@@ -78,9 +78,10 @@
     </body>
     <script type="text/javascript">
         function AutoSubmit(){
-            var frm1 = document.getElementById('getdata1');
-            frm1.submit();
+            var frm = document.getElementById('getwithdrawdata');
+            frm.submit();
         }
         window.onload = AutoSubmit;
     </script>
 </html>
+
