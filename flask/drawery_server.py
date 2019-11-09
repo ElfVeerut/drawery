@@ -9,6 +9,7 @@ from weight_check import checkWeight
 #sleep(0.5)
 #prepare_post()
 data = '0'
+withdrawdata = '0'
 app = Flask(__name__)
 
 @app.route('/')
@@ -34,6 +35,10 @@ def withdrawal():
 @app.route('/check_finger')
 def checkFinger():
     return render_template('fingerprint.html')
+
+@app.route('/enroll_finger')
+def enroll_finger_():
+    return render_template('fingerprint_register.html')
 
 @app.route('/no_finger_found')
 def noFinger():
@@ -130,17 +135,16 @@ def nameWithdrawal():
     if request.method == 'GET':
         return json.dumps(name_withdraw)
         
-@app.route('/register', methods = ['GET','POST'])
+@app.route('/register', methods = ['POST'])
 def enroll_():
     if request.method == 'POST':
-        name_withdraw = [1,1,1,1]
         name2 = request.form['num2']
         print(name2)
         if name2 == '1':
             if enroll():
                 return render_template('welcome.html')
             else:
-                return render_template('welcome.html')
+                return render_template('regest_fail.html')
     return ('error')
 
 @app.route('/check', methods = ['GET','POST'])
@@ -186,9 +190,10 @@ def get_data():
     if request.method == 'POST':
         global data
         data = request.form['data']
+        print(type(data))
         print(data)
-        return render_template('get_drawer_deposit.html')
-    
+        return render_template('get_drawer_deposit.html')   
+
 @app.route('/get_drawer', methods=['POST'])
 def get_drawers():
     print(data)
@@ -197,22 +202,37 @@ def get_drawers():
     if request.method == 'POST':
 #        name = request.form['getdrawer']
 #        print(name)
-        go_to_locker(data)
-        sleep(1)
-        returnpos_to_locker(data)
+#        go_to_locker(data)
+#        sleep(1)
+#        returnpos_to_locker(data)
         return render_template('Place_item.html')
 #    go_to_locker(2)
 #    sleep(1)
 #    returnpos_to_locker(2)
 #    go_home()
-#    prepare_pos()
-        
+#    prepare_pos()   
     return(data)
 
         
-#@app.route('/track', methods = ['POST'])
-#def track_info():
-#    if request.method == 'POST':
+@app.route('/getWithdrawData', methods=['POST'])
+def get_withdraw_data():
+    if request.method == 'POST':
+        global withdrawdata
+        withdrawdata=request.form['withdrawdata']
+        print(withdrawdata)
+        return render_template('get_drawer_withdraw.html')
+    
+@app.route('/getWithdrawDrawer', methods=['POST'])
+def get_withdraw_drawer():
+    print(withdrawdata)
+    withdrawdata = int(withdrawdata)
+    if request.method == 'POST':
+#        go_to_locker(withdrawdata)
+#        sleep(1)
+#        returnpos_to_locker(withdrawdata)
+#        return render_template('')
+        return (withdrawdata)
+        
         
            
         
