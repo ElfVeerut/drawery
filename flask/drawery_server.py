@@ -44,9 +44,13 @@ def enroll_finger_():
 def noFinger():
     return render_template('regis_adminpass.html')
 
-@app.route('/return_item')
+@app.route('/return_item_deposit')
 def ReturnItem():
     return render_template('return_drawer_deposit.html')
+
+@app.route('/return_item_withdraw')
+def ReturnItemWithdraw():
+    return render_template('return_drawer_withdraw.html')
 
 @app.route('/public_or_private')
 def PublicOrPrivate():
@@ -73,26 +77,28 @@ def check_dp():
 #    x = HomePosition(19,26,4,CW)
 #    y = HomePosition(20,21,17,CWW)
 #    z = HomePosition(13,6,18,CW)
-    if public_box[0] == 0:
+    if public_box != [1,1]:
+        return render_template('Deposit_Public_Available.html')
+#    if public_box[0] == 0:
 #        go_to_locker(3)
 #        sleep(1)
 #        returnpos_to_locker(3)
 #        go_home()
 #        prepare_pos()
-        return('returning box1') #return page GUI
+#        return('returning box1') #return page GUI
         
-    elif public_box[1] == 0:
+#    elif public_box[1] == 0:
 #        go_to_locker(4)
 #        sleep(1)
 #        returnpos_to_locker(4)
 #        go_home()
 #        prepare_pos()
-        return ('returning box2') #return page GUI
+#        return ('returning box2') #return page GUI
     
     else:
         return render_template('NoAvailibleDrawer.html')
                
-@app.route('/box_check_public_deposit', methods = ['GET','BOX'])
+@app.route('/box_check_public_deposit', methods = ['GET','POST'])
 def public_deposit():
     public_box = [0,1]
     if request.method == 'GET':
@@ -192,26 +198,31 @@ def get_data():
         data = request.form['data']
         print(type(data))
         print(data)
-        return render_template('get_drawer_deposit.html')   
+        return render_template('get_drawer_deposit.html')
 
 @app.route('/get_drawer', methods=['POST'])
 def get_drawers():
+    global data
     print(data)
     print(type(data))
-    data = int(data) 
     if request.method == 'POST':
+        data = int(data)
 #        name = request.form['getdrawer']
 #        print(name)
 #        go_to_locker(data)
-#        sleep(1)
+        return render_template('Place_item.html')  
+    return(str(data))
+
+@app.route('/return_drawer', methods=['POST'])
+def return_drawers():
+    global data
+    print(data)
+    print(type(data))
+    if request.method == 'POST':
+        data = int(data)
+        print(data)
 #        returnpos_to_locker(data)
-        return render_template('Place_item.html')
-#    go_to_locker(2)
-#    sleep(1)
-#    returnpos_to_locker(2)
-#    go_home()
-#    prepare_pos()   
-    return(data)
+        return 'finish'
 
         
 @app.route('/getWithdrawData', methods=['POST'])
@@ -224,15 +235,24 @@ def get_withdraw_data():
     
 @app.route('/getWithdrawDrawer', methods=['POST'])
 def get_withdraw_drawer():
+    global withdrawdata
     print(withdrawdata)
-    withdrawdata = int(withdrawdata)
     if request.method == 'POST':
+        withdrawdata = int(withdrawdata)
 #        go_to_locker(withdrawdata)
-#        sleep(1)
+        return render_template('place_item_withdraw.html')
+#        return (str(withdrawdata))
+
+@app.route('/return_drawer_withdraw', methods=['POST'])
+def return_drawers_withdraw():
+    global withdrawdata
+    print(withdrawdata)
+    print(type(withdrawdata))
+    if request.method == 'POST':
+        withdrawdata = int(withdrawdata)
+        print(withdrawdata)
 #        returnpos_to_locker(withdrawdata)
-#        return render_template('')
-        return (withdrawdata)
-        
+        return 'finish'
         
            
         
