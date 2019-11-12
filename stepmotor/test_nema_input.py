@@ -26,13 +26,13 @@ class HomePosition:
         GPIO.output(self.dir_motor,self.CW_CCW)
         while i <= num :
             GPIO.output(self.step_motor,GPIO.HIGH)
-            sleep(.001)
+            sleep(self.num_sleep)
             GPIO.output(self.step_motor,GPIO.LOW)
-            sleep(.001)
+            sleep(self.num_sleep)
             i+=1
 x = HomePosition(19,26,4,CCW,.001)
 y = HomePosition(20,21,17,CW,.001)
-z = HomePosition(13,6,18,CW,.001)
+z = HomePosition(13,6,18,CW,.0005)
 # Main body of code
 try:
     while True:
@@ -48,6 +48,15 @@ try:
             z.move(num)
         else:
             print("axis not found")
+            # lift x = 2300 z = 500 x
+            # 1 to return y = 2600 z = 4400 thenx = 3000
+            # place z = 460
+            # 2 to return z = 4400 then x = 3000
+            # 3 to return y = 2700 z = 2300then x = 3000 then z = 380
+            # 4 to return z = 2600 then x = 3000 then z = 700
+            # return to 3
+            # return to 2 z = 500
+            # return to 1 z = 500
 except KeyboardInterrupt: # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup
     print("Cleaning up!")
     gpio.cleanup
