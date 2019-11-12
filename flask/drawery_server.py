@@ -4,6 +4,15 @@ from time import sleep
 from enrollm1 import enroll
 from checkm1 import check
 from weight_check import checkWeight
+#from new_finger_track.csv import csv
+#import panda as pd
+
+#filename = "new_finger_track.csv"
+#header = ("ID","Name","Item","Public/Private","Availability","Time")
+#with open(filename,'r', newline= "") as file:
+
+#    readData = [row for row in csv.DictReader(file)]
+
 
 #go_home()
 #sleep(0.5)
@@ -52,13 +61,19 @@ def ReturnItem():
 def ReturnItemWithdraw():
     return render_template('return_drawer_withdraw.html')
 
+@app.route('/return_item_private')
+def ReturnItemPrivate():
+    return render_template('return_drawer_private.html')
+
 @app.route('/public_or_private')
 def PublicOrPrivate():
-    box = [0,0,0,0]
+    box = []
     if box == [1,1,1,1]:
         return render_template('NoAvailableForEveryDrawer.html')
     else:
         return render_template('Private_public.html')
+#    for _ in  
+    
  
 @app.route('/name_deposit', methods = ['GET','POST'])
 def nameDeposit():
@@ -110,25 +125,61 @@ def check_pp():
 #    x = HomePosition(19,26,4,CW)
 #    y = HomePosition(20,21,17,CWW)
 #    z = HomePosition(13,6,18,CW)
-    if private_box[0] == 0:
+    if private_box != [1,1]:
+        return render_template('get_drawer_private.html')
+#    if private_box[0] == 0:
 #        go_to_locker(2)
 #        sleep(1)
 #        returnpos_to_locker(2)
 #        go_home()
 #        prepare_pos()
-        return('returning box3') #return page GUI
+#        return('returning box3') #return page GUI
         
-    elif private_box[1] == 0:
+#    elif private_box[1] == 0:
 #        go_to_locker(1)
 #        sleep(1)
 #        returnpos_to_locker(1)
 #        go_home()
 #        prepare_pos()
-        return ('returning box4') #return page GUI
+#        return ('returning box4') #return page GUI
     
     else:
         return render_template('NoAvailibleDrawer.html')
-        
+
+@app.route('/get_drawer_private', methods = ['POST'])
+def getDrawerPrivate():
+    private_box = [1,0]
+    if request.method == 'POST':
+        if private_box[0] == 0:
+#            go_to_locker(2)
+            return render_template('place_item_private.html') #return page GUI
+            
+        elif private_box[1] == 0:
+#            go_to_locker(1)
+            return render_template('place_item_private.html') #return page GUI
+    return('error')
+
+@app.route('/return_drawer_private', methods = ['POST'])
+def returnDrawerPrivate():
+    private_box = [1,0]
+    if request.method == 'POST':
+        if private_box[0] == 0:
+#            returnpos_to_locker(2)
+#            sleep(1)
+#            go_home()
+#            prepare_pos()
+            return render_template('welcome.html')
+#            return ('finish') #return page GUI
+            
+        elif private_box[1] == 0:
+#            returnpos_to_locker(1)
+#            sleep(1)
+#            go_home()
+#            prepare_pos()
+            return render_template('welcome.html')
+#            return ('finish')
+    return ('error')
+
 @app.route('/box_check_private_deposit', methods = ['GET','POST'])
 def private_deposit():
     private_box = [1,0]
@@ -173,8 +224,8 @@ def adminPassword():
         print (GetPassword)
         if GetPassword == SetPassword:
             return render_template('register.html')
-        else:
-            return render_template('')
+#        else:
+#            return render_template('')
     
 @app.route('/register_name', methods = ['POST'])
 def getRegisterName():
@@ -222,7 +273,11 @@ def return_drawers():
         data = int(data)
         print(data)
 #        returnpos_to_locker(data)
-        return 'finish'
+#        sleep(1)
+#        go_home()
+#        prepare_pos()
+            
+        return render_template('welcome.html')
 
         
 @app.route('/getWithdrawData', methods=['POST'])
@@ -252,7 +307,11 @@ def return_drawers_withdraw():
         withdrawdata = int(withdrawdata)
         print(withdrawdata)
 #        returnpos_to_locker(withdrawdata)
-        return 'finish'
+#        sleep(1)
+#        go_home()
+#        prepare_pos()
+            
+        return render_template('welcome.html')
         
            
         
