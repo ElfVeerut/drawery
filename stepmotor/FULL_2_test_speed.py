@@ -69,9 +69,9 @@ def out():
     x = HomePosition(19,26,4,CW,.001)
     y = HomePosition(20,21,17,CCW,.001)
     z = HomePosition(13,6,18,CCW,.001)
-    z.move(700,CW)
+    z.move(700,CW,.0005)
     sleep(0.05)
-    x.move(3000,CW,.0005)
+    x.move(3000,CW,.0003)
     sleep(0.05)
     return "OUT"
 def lift():
@@ -117,14 +117,14 @@ def go_to_locker(n):
         z.move(460,CCW,.0005)
         return 'hello im done'
     elif n == 2:
-        y.move(1300,CCW)
+        y.move(1300,CCW,.0005)
         print("reach locker bot_right")
         lift()
-        z.move(4400,CW)
+        z.move(4400,CW,.0005)
         sleep(0.05)
-        x.move(3000,CCW)
+        x.move(3000,CCW,.0005)
         sleep(0.05)
-        z.move(460,CCW)
+        z.move(460,CCW,.0005)
     elif n == 3 :
         motor_threading1 = threading.Thread(target=y.move,args=(1450,CW,.0005)) #1000
         motor_threading2 = threading.Thread(target=z.move,args=(2000,CW,.0005)) #1675
@@ -140,35 +140,35 @@ def go_to_locker(n):
         motor_threading2.start()
         motor_threading1.join()
         motor_threading2.join()
-        x.move(3000,CCW,.0005)
+        x.move(3000,CCW,.0003)
         sleep(0.05)
-        z.move(400,CCW)
+        z.move(400,CCW,.0005)
         
     elif n == 4 :
-        motor_threading1 = threading.Thread(target=y.move,args=(1300,CCW)) #1000
-        motor_threading2 = threading.Thread(target=z.move,args=(2000,CW)) #1675
+        motor_threading1 = threading.Thread(target=y.move,args=(1300,CCW,.0005)) #1000
+        motor_threading2 = threading.Thread(target=z.move,args=(2000,CW,.0005)) #1675
         motor_threading1.start()
         motor_threading2.start()
         motor_threading1.join()
         motor_threading2.join()
         print("reach locker top_right")
         lift()
-        z.move(2600,CW)
+        z.move(2600,CW,.0005)
         sleep(0.05)
-        x.move(3000,CCW)
+        x.move(3000,CCW,.0005)
         sleep(0.05)
-        z.move(700,CCW)
+        z.move(700,CCW,.0005)
 def returnpos_to_locker(n):
     x = HomePosition(19,26,4,CW,.001)
     y = HomePosition(20,21,17,CCW,.001)
     z = HomePosition(13,6,18,CCW,.001)
     if n == 4:
         out()
-        z.move(2600,CCW)
+        z.move(2600,CCW,.0005)
         sleep(0.05)
-        x.move(3000,CCW)
+        x.move(3000,CCW,.0005)
         sleep(0.05)
-        z.move(500,CCW)
+        z.move(500,CCW,.0005)
         sleep(0.05)
         x.move(3000,CW,.0005)
         sleep(1)
@@ -191,27 +191,29 @@ def returnpos_to_locker(n):
         return "DONE"
     elif n == 2 :
         out()
-        z.move(4600,CCW)
+        z.move(4600,CCW,.0005)
         sleep(0.05)
-        x.move(3000,CCW)
+        x.move(3000,CCW,.0005)
         sleep(0.05)
-        z.move(500,CCW)
+        z.move(500,CCW,.0005)
         sleep(0.05)
-        x.move(3000,CW)
+        x.move(3000,CW,.0005)
         return "DONE"
     elif n == 1:
         out()
         sleep(0.05)
-        motor_threading1 = threading.Thread(target=y.move,args=(2600,CW)) #1000
-        motor_threading2 = threading.Thread(target=z.move,args=(4600,CCW)) #1675
+        motor_threading1 = threading.Thread(target=y.move,args=(2600,CW,.0005)) #1000
+        motor_threading2 = threading.Thread(target=z.move,args=(4600,CCW,.0005)) #1675
         motor_threading1.start()
         motor_threading2.start()
         motor_threading1.join()
         motor_threading2.join()
         sleep(0.05)
-        x.move(3000,CCW)
+        x.move(3000,CCW,.0005)
         sleep(0.05)
-        z.move(500,CCW)
+        z.move(500,CCW,.0005)
         sleep(0.05)
-        x.move(3000,CW)
+        x.move(3000,CW,.0005)
         return "DONE"
+def inter1():
+    pass
