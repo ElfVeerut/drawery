@@ -29,8 +29,22 @@ def recall_data():
     
     return ('done')
 
-#def rewrite_data()
-       
+def rewrite_data(number):
+
+    with open(filename,'r', newline= "") as file:
+
+        readData = [row for row in csv.DictReader(file)]
+        readData[number-1]['Availability'] = '1'
+
+    readHeader = readData[0].keys()
+
+    with open (filename, "w", newline = "") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames = header)
+        writer.writeheader()
+        writer.writerows(readData)
+#    file.close()
+#    csvfile.close()
+    return ("Done")
 
 #    readData = [row for row in csv.DictReader(file)]
 
@@ -40,6 +54,7 @@ def recall_data():
 recall_data()
 data = '0'
 withdrawdata = '0'
+#check = (-1)
 app = Flask(__name__)
 
 @app.route('/')
@@ -108,13 +123,13 @@ def PublicOrPrivate():
 @app.route('/name_deposit', methods = ['GET','POST'])
 def nameDeposit():
     res = ''
-    nc=[0,0,0,0]
+    recall_data()
     if request.method == 'POST':
         name = request.form['FirstName']
         res += name       
         return render_template('Deposit_Avaible.html')
     if request.method == 'GET':
-        return json.dumps(nc)
+        return json.dumps(box)
         
 @app.route('/box_check_dp')
 def check_dp():
@@ -183,37 +198,37 @@ def check_pp():
 def getDrawerPrivate():
     recall_data()
 #    private_box = [0,0]
-#    if request.method == 'POST':
-#        if private_box[0] == 0:
-#            go_to_locker(2)
-    return render_template('place_item_private.html') #return page GUI
+    if request.method == 'POST':
+        if private_box[0] == 0:
+#            go_to_locker(3)
+            return render_template('place_item_private.html') #return page GUI
 #            
-#        elif private_box[1] == 0:
-#            go_to_locker(1)
-#            return render_template('place_item_private.html') #return page GUI
-#    return('error')
+        elif private_box[1] == 0:
+#            go_to_locker(4)
+            return render_template('place_item_private.html') #return page GUI
+    return('error')
 
 @app.route('/return_drawer_private', methods = ['POST'])
 def returnDrawerPrivate():
     recall_data()
 #    private_box = [0,0]
-#    if request.method == 'POST':
-#        if private_box[0] == 0:
-#            returnpos_to_locker(2)
+    if request.method == 'POST':
+        if private_box[0] == 0:
+#            returnpos_to_locker(3)
 #            sleep(1)
 #            go_home()
 #            prepare_pos()
-    return render_template('welcome.html')
-#            return ('finish') #return page GUI
+#            rewrite_data(3)
+            return render_template('welcome.html')
             
-#        elif private_box[1] == 0:
-#            returnpos_to_locker(1)
+        elif private_box[1] == 0:
+#            returnpos_to_locker(4)
 #            sleep(1)
 #            go_home()
 #            prepare_pos()
-#            return render_template('welcome.html')
-#            return ('finish')
-#    return ('error')
+#            rewrite_data(4)
+            return render_template('welcome.html')
+    return ('error')
 
 @app.route('/box_check_private_deposit', methods = ['GET','POST'])
 def private_deposit():
@@ -231,11 +246,13 @@ def nameWithdrawal():
         
 @app.route('/register', methods = ['POST'])
 def enroll_():
+    global fingerData
     if request.method == 'POST':
         name2 = request.form['num2']
         print(name2)
         if name2 == '1':
-            if enroll():
+            fingerData = enroll()
+            if fingerData != False:
                 return render_template('welcome.html')
             else:
                 return render_template('regest_fail.html')
@@ -243,11 +260,13 @@ def enroll_():
 
 @app.route('/check', methods = ['GET','POST'])
 def check_():
+    global check_tim
     if request.method == 'POST':
         name = request.form['num']
         print(name)
         if name == '1':
-            if check()!= (-1):
+            check_tim = check()
+            if check_tim != (-1):
                 return render_template('WithdrawOrDeposit.html')
             else:
                 return render_template('regis_adminpass.html')
@@ -271,11 +290,22 @@ def getRegisterName():
         print (register_name)
         return render_template('fingerprint_register.html')
     
-@app.route('/weight_check_or_button_private', methods = ['POST'])
+@app.route('/weight_check_private', methods = ['POST'])
 def check_weight():
-    if request.method == 'POST': 
-        if checkWeight() == True or request.form['buttonPressed'] == 'True':
+    if request.method == 'POST':
+        if checkWeight() == True:
+#            return 'True'
             return render_template('return_drawer_private.html')
+@app.route('/buttonpressed_private', methods = ['POST'])
+def button_pressed():
+    if request.method == 'POST':
+        if request.form['buttonPressed'] == 'True':
+#            return 'True'
+            return render_template('return_drawer_private.html')
+#@app.route('/weightcheck_or_buttonpressed_private')
+#def weight_or_button():
+#    if check_weight()=='True' or button_pressed()=='True':
+#        return render_template('return_drawer_private.html')
         
 @app.route('/getDataPublic', methods = ['POST'])
 def get_data():
@@ -311,8 +341,7 @@ def return_drawers():
         sleep(1)
         go_home()
         prepare_pos()
-        recall_data()
-            
+        recall_data()        
         return render_template('welcome.html')
 
         
@@ -332,7 +361,6 @@ def get_withdraw_drawer():
         withdrawdata = int(withdrawdata)
         go_to_locker(withdrawdata)
         return render_template('place_item_withdraw.html')
-#        return (str(withdrawdata))
 
 @app.route('/return_drawer_withdraw', methods=['POST'])
 def return_drawers_withdraw():
@@ -350,8 +378,8 @@ def return_drawers_withdraw():
             
         return render_template('welcome.html')
         
-
-        
+#if __name__=="__main__":
+#    app.run(ssl_context="adhoc")
         
         
         
