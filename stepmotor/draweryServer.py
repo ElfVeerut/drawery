@@ -1,9 +1,10 @@
 from flask import Flask
 from time import sleep
-from FULL_2_test_speed import *
+from start import *
 app = Flask(__name__)
 
-go_home()
+return_home_inter()
+#go_home()
 sleep(1)
 prepare_pos()
 
@@ -14,18 +15,18 @@ def Hello():
     #y = HomePosition(20,21,17,CCW)
     #z = HomePosition(13,6,18,CW)
     if public_box[0] == 0:
-        go_to_locker(3)
+        go_to_locker(1)
         sleep(1)
-        returnpos_to_locker(3)
+        returnpos_to_locker(1)
         sleep(1)
         go_home()
         prepare_pos()
         
         return ('sss')
     elif public_box[1] == 0:
-        go_to_locker(4)
+        go_to_locker(2)
         sleep(1)
-        returnpos_to_locker(4)
+        returnpos_to_locker(2)
         return('ssss')
     else:
         return ('error')

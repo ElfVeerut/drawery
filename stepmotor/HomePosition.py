@@ -9,7 +9,7 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 class HomePosition():
-    def __init__(self,dir_motor,step_motor,pos_home,CW_CCW,num_sleep=.001):
+    def __init__(self,dir_motor,step_motor,pos_home,CW_CCW,num_sleep=.0003):
         self.dir_motor = dir_motor
         self.step_motor = step_motor
         self.pos_home = pos_home
@@ -33,13 +33,16 @@ class HomePosition():
                 GPIO.output(self.step_motor,GPIO.LOW)
                 sleep(self.num_sleep)
                 if self.limit_switch():
-                    sleep(0.01)
+                    sleep(0.005)
                     if self.limit_switch():
                         break
             return True
         except:
             print(self.limit_switch())
-    def move(self,duration,direction,num2=0.001):
+            sleep(0.005)
+            if self.limit_switch():
+                return_home()
+    def move(self,duration,direction,num2=0.003):
         GPIO.output(self.dir_motor,direction)
         self.status = True
         # global stop_running
