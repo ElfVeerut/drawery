@@ -1,5 +1,9 @@
 from flask import Flask, redirect, url_for, request, render_template, jsonify, request
 import ast, json, os, webbrowser,csv
+import flask_sqlalchemy import SQLAlchemy
+from flask_security import Security, SQLAlchemyUserDatastore, login_required, \
+    UserMixin
+from flask_security.utils import hash_password
 from time import sleep
 from dear import *
 from enrollm1 import enroll
@@ -8,8 +12,17 @@ from weight_check import checkWeight
 import csv
 #import panda as pd
 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'thisisasecret'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://db.fingerprintLogin'
+app.config['SECURITY_PASSWORD_SALT'] = 'thisisasecretsalt'
+
+db = SQLAlachemy(app)
+
+roles_users = db.Table('roles_users',
+
 filename = "new_finger_track.csv"
-header = ("ID","Name","Item","Public/Private","Availability","Time")
+header = ("ID","Name","Item","Public/Private","Availability","Process")
 def recall_data():
     global box
     global public_box
@@ -27,14 +40,14 @@ def recall_data():
         public_box = [box[0],box[1]]
         private_box = [box[2],box[3]]
     
-    return ('done')
+    return 
 
 def rewrite_data(number):
 
     with open(filename,'r', newline= "") as file:
 
         readData = [row for row in csv.DictReader(file)]
-        readData[number-1]['Availability'] = '1'
+        readData[number-1]['Availability'] = '0'
 
     readHeader = readData[0].keys()
 
@@ -44,8 +57,8 @@ def rewrite_data(number):
         writer.writerows(readData)
 #    file.close()
 #    csvfile.close()
-    return ("Done")
-
+    return 
+rewrite_data(4)
 #    readData = [row for row in csv.DictReader(file)]
 
 #go_home()
