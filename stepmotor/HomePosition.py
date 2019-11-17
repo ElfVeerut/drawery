@@ -24,9 +24,9 @@ class HomePosition():
     def limit_switch(self):
         self.value_switch = GPIO.input(self.pos_home)
         return self.value_switch
-    def return_home(self): 
+    def return_home(self):
+        GPIO.output(self.dir_motor,self.CW_CCW)
         try:
-            GPIO.output(self.dir_motor,self.CW_CCW)
             while True:
                 GPIO.output(self.step_motor,GPIO.HIGH)
                 sleep(self.num_sleep)
