@@ -55,7 +55,7 @@ def lift():
 
     return "LIFT"
 def place():
-    #state = "place the #box"
+    #state = "place the box"
     x.move(3000,CCW,.0004)
     sleep(0.05)
     z.move(600,CCW,.0006)
@@ -188,7 +188,7 @@ def returnpos_to_locker(n):
         motor_threading2.join()
         place()
     #box = False
-    num_#box = 0
+    num_box = 0
     state = "locker"
     return
 def return_home_inter():
@@ -274,6 +274,7 @@ def inter():
     elif state == "locker with box" or state == "lifting":
         print("num box : " , num_box)
         print("state :",state)
+        
         #return_home_inter2()
         #sleep(0.05)
         #prepare_pos2()
