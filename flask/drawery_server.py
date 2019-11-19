@@ -10,7 +10,8 @@ from checkm1 import check
 from weight_check import checkWeight
 from start_2 import *
 from Drawer_Data import *
-
+from Username_Data import *
+import time
 
 #go_home()
 return_home_inter()
@@ -149,7 +150,7 @@ def withdrawal():
 @app.route('/public_or_private')
 def PublicOrPrivate():
     recall_data()
-    print(box)
+#    print(box)
     if fingerAuth:    
         if box == [1,1,1,1]:
             return render_template('NoAvailableForEveryDrawer.html')
@@ -231,6 +232,7 @@ def returnDrawerPrivate():
                 returnpos_to_locker(3)
                 sleep(1)
                 go_home()
+                sleep(1)
                 prepare_pos()
                 rewrite_data(3,'1')
                 recall_data()
@@ -293,12 +295,15 @@ def nameWithdrawal():
 @app.route('/register', methods = ['POST'])
 def enroll_():
     global fingerData
+    global register_name
     if request.method == 'POST':
 #        name2 = request.form['num2']
 #        print(name2)
 #        if name2 == '1':
         fingerData = enroll()
-        if fingerData != False:
+        if fingerData != (-1):
+            print(fingerData)
+            writeUsernameData(register_name, fingerData)
             return redirect(url_for('home'))
         else:
                 return render_template('regest_fail.html')
@@ -308,10 +313,13 @@ def enroll_():
 def check_():
     global check_tim
     global fingerAuth
+    global Username
     if request.method == 'POST':
         check_tim = check()
         if check_tim != (-1):
             fingerAuth = 1
+            Username = findUsernameData(str(check_tim))
+            print(Username)
             return render_template('WithdrawOrDeposit.html')
         else:
             return render_template('regis_adminpass.html')
@@ -330,6 +338,7 @@ def adminPassword():
     
 @app.route('/register_name', methods = ['POST'])
 def getRegisterName():
+    global register_name
     if request.method == 'POST':
         register_name = request.form['FirstName']
         print (register_name)
@@ -444,8 +453,11 @@ def get_withdraw_drawer():
     print(withdrawdata)
     if fingerAuth == 1:
         if request.method == 'POST':
+            t1 = time.time()
             withdrawdata = int(withdrawdata)
             go_to_locker(withdrawdata)
+            t2 = time.time()
+            print("time from locker to return pos : ", t2-t1)
             return render_template('place_item_withdraw.html')
     else:
         return redirect(url_for('home'))
@@ -458,16 +470,20 @@ def return_drawers_withdraw():
     print(type(withdrawdata))
     if fingerAuth == 1:
         if request.method == 'POST':
+            t1 = time.time()
             withdrawdata = int(withdrawdata)
             print(withdrawdata)
             returnpos_to_locker(withdrawdata)
             sleep(1)
             go_home()
+            sleep(1)
             prepare_pos()
             rewrite_data(withdrawdata,'0')
             recall_data()
             fingerAuth = 0
             returnBoxState = 0
+            t2 = time.time()
+            print("time return pos to prepare : ", t2-t1)
             return redirect(url_for('home'))
     else:
         return redirect(url_for('home'))

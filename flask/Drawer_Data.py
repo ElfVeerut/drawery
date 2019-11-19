@@ -27,6 +27,7 @@ def rewrite_data(number, dbValue):
 
         readData = [row for row in csv.DictReader(file)]
         readData[number-1]['Availability'] = dbValue
+#        readData[number-1]['Name']
 
     readHeader = readData[0].keys()
 
