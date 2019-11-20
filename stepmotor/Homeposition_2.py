@@ -4,12 +4,13 @@ GPIO.setmode(GPIO.BCM)
 CW =1
 CCW =0
 
-GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(15, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 class HomePosition():
-    def __init__(self,dir_motor,step_motor,pos_home,CW_CCW,num_sleep=.0003):
+    def __init__(self,name,dir_motor,step_motor,pos_home,CW_CCW,num_sleep=.0003):
+        self.name = name
         self.dir_motor = dir_motor
         self.step_motor = step_motor
         self.pos_home = pos_home
@@ -50,7 +51,7 @@ class HomePosition():
         if self.status:
             print("BUSY")
         self.status = True
-        print("move_function")
+        print(self.name,"move_function")
         for _ in range(duration):
             if self.interrupt and not self.lift :
                 self.status = False

@@ -7,9 +7,9 @@ CCW =0
 state = "Start"
 #box = False
 num_box = 0
-x = HomePosition(19,26,4,CW,.0003)
-y = HomePosition(1,12,17,CCW,.0003)
-z = HomePosition(13,6,18,CCW,.00025)
+x = HomePosition('x',19,26,15,CW,.00025) #[dir,step]
+y = HomePosition('y',1,12,17,CCW,.00025)
+z = HomePosition('z',13,6,18,CCW,.0003)
 def prepare_pos():
     global state
     global x,y,z
@@ -35,7 +35,6 @@ def prepare_pos2():
     motor_threading2 = threading.Thread(target=y.move,args=(1600,CW,.0003)) #167
     motor_threading2.start()
     motor_threading2.join()
-    state = "Prepare_pos"
     return "Prepare positon"    
 def out():
     global state
@@ -50,6 +49,7 @@ def lift():
     state = "lifting"
     x.lift = True
     z.lift = True
+    print("lifting")
     x.move(2300,CCW,.0003)
     sleep(0.05)
     z.move(500,CW,.00035)
@@ -64,11 +64,15 @@ def lift():
     return "LIFT"
 def place():
     #state = "place the box"
-    x.move(3000,CCW,.0004)
+    x.move(2920,CCW,.0004)
     sleep(0.05)
     z.move(600,CCW,.0006)
     sleep(0.05)
+    y.move(300,CW,.0007)
+    sleep(0.2)
+    y.move(500,CCW,.0007)
     x.move(3000,CW,.0004)
+    sleep(0.2)
     return
 def go_home():
     motor_threading1 = threading.Thread(target=x.return_home,args=()) #1000
@@ -89,10 +93,13 @@ def go_to_locker(n):
     global num_box
     num_box = n
     if n == 3 :
-        y.move(1400,CW,.0003)
+        y.move(1500,CW,.0003)
+        z.move(30,CCW,.0003)
         state = "locker"
-        lift()
-        state = "locker with box"
+        sleep(1)
+        if not x.interrupt and not y.interrupt and not z.interrupt:
+            print("lifting the box")
+            lift()
         motor_threading1 = threading.Thread(target=y.move,args=(2600,CCW,.0003)) #1000
         motor_threading2 = threading.Thread(target=z.move,args=(4400,CW,.0003)) #1675
         motor_threading1.start()
@@ -107,10 +114,11 @@ def go_to_locker(n):
 
     elif n == 4:
         y.move(1350,CCW,.0003)
-        print("reach locker bot_right")
         state = "locker"
-        lift()
-        state = "locker with box"
+        sleep(1)
+        if not x.interrupt and not y.interrupt and not z.interrupt:
+            print("lifting the box")
+            lift()
         z.move(4400,CW,.0003)
         sleep(0.05)
         x.move(3000,CCW,.0003)
@@ -119,16 +127,16 @@ def go_to_locker(n):
 
     elif n == 2 :
         state = "locker"
-        motor_threading1 = threading.Thread(target=y.move,args=(1400,CW,.0003)) #1000
+        motor_threading1 = threading.Thread(target=y.move,args=(1500,CW,.0003)) #1000
         motor_threading2 = threading.Thread(target=z.move,args=(1980,CW,.0003)) #1675
         motor_threading1.start()
         motor_threading2.start()
         motor_threading1.join()
         motor_threading2.join()
-        print("reach locker top_left")
-        state = "locker"
-        lift()
-        state = "locker with box"
+        sleep(1)
+        if not x.interrupt and not y.interrupt and not z.interrupt:
+            print("lifting the box")
+            lift()
         motor_threading1 = threading.Thread(target=y.move,args=(2700,CCW,.0003)) #1000
         motor_threading2 = threading.Thread(target=z.move,args=(2300,CW,.0003)) #1675
         motor_threading1.start()
@@ -148,13 +156,15 @@ def go_to_locker(n):
         motor_threading1.join()
         motor_threading2.join()
         print("reach locker top_right")
-        lift()
-        state = "locker with box"
+        sleep(1)
+        print(not x.interrupt and not y.interrupt and not z.interrupt)
+        if not x.interrupt and not y.interrupt and not z.interrupt:
+            print("lifting the box")
+            lift()
         z.move(2600,CW,.00032)
-        sleep(0.05)
         x.move(3000,CCW,.0003)
-        sleep(0.05)
         z.move(700,CCW,.00032)
+    print("1234")
     update_inter(False)
     return
 
@@ -162,34 +172,26 @@ def returnpos_to_locker(n):
     global state
     global num_box
     num_box = n
+    state = "return_to_locker"
     if n == 1:
         out()
-        state = "return_to_locker"
-        z.move(2600,CCW,.0003)
-        sleep(0.05)
+        z.move(2540,CCW,.0003)
         place()
     elif n == 2:
-        out()
-        state = "return_to_locker"
-        sleep(0.05)
-        motor_threading1 = threading.Thread(target=y.move,args=(2725,CW,.0003)) #1000
-        motor_threading2 = threading.Thread(target=z.move,args=(2600,CCW,.0003)) #1675
+        out() 
+        motor_threading1 = threading.Thread(target=y.move,args=(2700,CW,.0003)) #1000
+        motor_threading2 = threading.Thread(target=z.move,args=(2525,CCW,.0003)) #1675
         motor_threading1.start()
         motor_threading2.start()
         motor_threading1.join()
         motor_threading2.join()
-        sleep(0.05)
         place()
     elif n == 4 :
         out()
-        state = "return_to_locker"
         z.move(4600,CCW,.0003)
-        sleep(0.05)
         place()
     elif n == 3:
         out()
-        state = "return_to_locker"
-        sleep(0.05)
         motor_threading1 = threading.Thread(target=y.move,args=(2610,CW,.0003)) #1000
         motor_threading2 = threading.Thread(target=z.move,args=(4600,CCW,.0003)) #1675
         motor_threading1.start()
@@ -200,9 +202,9 @@ def returnpos_to_locker(n):
     update_inter(False)
     #box = False
     num_box = 0
-    state = "locker"
     return
 def return_home_inter():
+    print("Returing Home Mode : interrupt")
     x.return_home()
     t1 = threading.Thread(target=y.return_home,args=())
     t2 = threading.Thread(target=z.return_home,args=())
@@ -216,10 +218,6 @@ def return_home_inter():
     return
 def return_home_inter2():
     z.return_home()
-    sleep(0.05)
-    if not z.value_switch:
-        z.return_home()
-    sleep(0.05)
     x.return_home()
     y.return_home()
     print("HOME")
@@ -243,8 +241,8 @@ def return_box_inter(n):
         motor_threading2.join()
         x.move(300,CCW,.0003)
     elif n == 2 :
-        motor_threading1 = threading.Thread(target=y.move,args=(1425,CW,.0003)) #1000
-        motor_threading2 = threading.Thread(target=z.move,args=(2580,CW,.0003)) #1675
+        motor_threading1 = threading.Thread(target=y.move,args=(1480,CW,.0003)) #1000
+        motor_threading2 = threading.Thread(target=z.move,args=(2680,CW,.0003)) #1675
         motor_threading1.start()
         motor_threading2.start()
         motor_threading1.join()
@@ -260,6 +258,7 @@ def return_box_inter(n):
         motor_threading2.join()
         x.move(300,CCW,.0003)
     place()
+    print("finishing return box to locker")
 
 def inter():
     global state
@@ -268,43 +267,45 @@ def inter():
     y.interrupt = True
     z.interrupt = True
     
-    print("state : ", state)
+    print("state condition : ", state)
+    print("wating for all axis stop")
     while  x.interrupt or y.interrupt or z.interrupt:
-        sleep(0.005)
-        print("HI")
-    if state == "Prepare_pos" or state == "locker"or state == "Start":
-        
+        sleep(0.1)
+    print("handle interrupt")
+    print("state123 :" , state)
+    if state == "Prepare_pos" or state == "locker" or state == "Start":
         return_home_inter()
         prepare_pos()
         print("state :",state)
-        return "HOME"
+        print("HOME1")
+        return "HOME1"
     elif state == "locker with box" or state == "lifting":
         print("num box : " , num_box)
         print("state :",state)
-        
         return_home_inter2()
-        #sleep(0.05)
-        #prepare_pos2()
-        #return_box_inter(num_box)
-        #return_home_inter()
-        #prepare_pos()
-        return "HOME"
+        sleep(0.05)
+        prepare_pos2()
+        return_box_inter(num_box)
+        return_home_inter()
+        prepare_pos()
+        print("HOME2")
+        return "HOME2"
     elif state == "return_to_locker" :
-        #return_home_inter2()
+        return_home_inter2()
         print("num box : " , num_box)
         print("state :",state)
-        #sleep(1)
-        #t1 = threading.Thread(target=z.move,args=(5000,CW,.0003)) 
-        #t2 = threading.Thread(target=y.move,args=(300,CW,.0003)) 
-        #t1.start()
-        #t2.start()
-        #t1.join()
-        #t2.join()
-        #x.move(3200,CCW,.0003)
-        #z.move(450,CCW,.0003)
+        t1 = threading.Thread(target=z.move,args=(5000,CW,.0003)) 
+        t2 = threading.Thread(target=y.move,args=(300,CW,.0003))
+        t1.start()
+        t2.start()
+        t1.join()
+        t2.join()
+        x.move(3200,CCW,.0003)
+        z.move(450,CCW,.0003)
         #distance from home to return pos
+        print("HOME3")
         return "Return Drawer"
     else :
-        print(state)
+        print("else : ",state)
         return state
     return 
