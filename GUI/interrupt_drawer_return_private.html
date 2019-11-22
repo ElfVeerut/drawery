@@ -63,22 +63,15 @@
     </head>
 
         <body style="background-color:rgb(50, 54, 57)">    
-            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Returning drawer...</h1> 
+            <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Wait a moment...</h1> 
             <div class="lds-dual-ring"></div>
-            <form id='returndata'  action="http://127.0.0.1:5000/return_drawer_withdraw" method="post">
+            <form id='interruptdata'  action="http://127.0.0.1:5000/interrupt_drawer_return_private" method="post">
                  <input type='hidden' onclick='this.disabled = true' id='data' name="data" value='True'>
-            </form>-->
-                <div style="text-align:center;">
-                    <a href="http://127.0.0.1:5000/interrupt_item_return_withdraw" style="text-decoration:none">
-                        <button type="button" class="btn" style="margin-top:100px;">Cancel</button>
-                    </a>
-                    
-                </div>
-            </form> 
+            </form>
         </body>
     <script type='text/javascript'>
     function formAutoSubmit(){
-        var frm = document.getElementById('returndata');
+        var frm = document.getElementById('interruptdata');
         frm.submit();
     }
     window.onload = formAutoSubmit;

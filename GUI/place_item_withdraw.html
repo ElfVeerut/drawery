@@ -38,11 +38,20 @@
     </head>
     
     <body style="background-color:rgb(50, 54, 57)">    
-        <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Please place your item</h1> 
+        <h1 style="text-align:center; font-size:85px; color:white; margin-top:50px; margin-bottom:100px">Please get your item</h1> 
         <div style="text-align:center;">
-            <a href="http://127.0.0.1:5000/return_item_withdraw" style="text-decoration:none">
-                <button type="button" class="btn" style="margin-top:100px;">Done</button>
-            </a>
+            <form id="weight_data" action="http://127.0.0.1:5000/weight_check_withdraw" method="post">
+                <input type="hidden" id="weight" name="weight" value="true">
+            </form>
+            <form action="http://127.0.0.1:5000/buttonpressed_withdraw" method="post">
+                <button type="submit" class="btn" style="margin-top:100px;">Done</button>
+            </form>
         </div>
     </body>
-</html>
+    <script type="text/javascript">
+        function AutoSubmit(){
+            var frm = document.getElementById("weight_data");
+            frm.submit();
+        }
+        window.onload = AutoSubmit;
+    </script>

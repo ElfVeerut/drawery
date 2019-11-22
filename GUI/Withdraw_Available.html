@@ -111,7 +111,7 @@
                     console.log(y);
                     for (i=0; i<y.length; i++){
                         console.log(y[i]);
-                        if (y[i] == 1){
+                        if (y[i] == 0){ <!--(y[i] == 0)-->
                             box+=i+1;
                             console.log(box);
                             document.getElementById(box).style.backgroundColor = 'rgb(50, 54, 57)';
@@ -119,6 +119,7 @@
                             document.getElementById(box).style.color = 'rgb(50, 54, 57)'
                             document.getElementById(box).pointerEvents = "none";
                             document.getElementById(box).pointer = "default";
+                            document.getElementById(box).disabled = true;
                             box = 'box';
                         }
                     }
