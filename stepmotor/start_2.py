@@ -8,7 +8,7 @@ state = "Start"
 #box = False
 num_box = 0
 x = HomePosition('x',19,26,15,CW,.00025) #[dir,step]
-y = HomePosition('y',1,12,17,CCW,.00025)
+y = HomePosition('y',20,21,17,CCW,.00025)
 z = HomePosition('z',13,6,18,CCW,.0003)
 def prepare_pos():
     global state
