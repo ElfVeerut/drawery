@@ -7,17 +7,17 @@ import ast, json, os, webbrowser, csv
 from time import sleep
 from enrollm1 import enroll
 from checkm1 import check
-from weight_check import checkWeight
-from start_2 import *
+from weight_check import *
+from start_3 import *
 from Drawer_Data import *
 from Username_Data import *
 import time
 
+
 #go_home()
 return_home_inter()
-sleep(0.5)
 prepare_pos()
-recall_data()
+box = recall_data()
 box = []
 public_box = []
 private_box = []
@@ -25,6 +25,7 @@ data = '0'
 withdrawdata = '0'
 fingerAuth = 0
 returnBoxState = 0
+interrupt = 0
 #check = (-1)
 app = Flask(__name__)
 
@@ -137,9 +138,12 @@ def InterrupItemReturnPrivate():
 
 @app.route('/withdrawal')
 def withdrawal():
-    recall_data()
+    global box
+#    recall_data()
+    box = recall_data()
+    box = withdraw_data(Username)
     if fingerAuth:
-        if box != [1,1,1,1]:
+        if box != [0,0,0,0]:
             return render_template('Withdraw_Available.html')
         else:
             return render_template('NoAvailableForEveryDrawer.html')
@@ -149,7 +153,7 @@ def withdrawal():
     
 @app.route('/public_or_private')
 def PublicOrPrivate():
-    recall_data()
+    box = recall_data()
 #    print(box)
     if fingerAuth:    
         if box == [1,1,1,1]:
@@ -162,7 +166,7 @@ def PublicOrPrivate():
 @app.route('/name_deposit', methods = ['GET','POST'])
 def nameDeposit():
     res = ''
-    recall_data()
+    box = recall_data()
     if fingerAuth:
         if request.method == 'POST':
             name = request.form['FirstName']
@@ -175,7 +179,8 @@ def nameDeposit():
     
 @app.route('/box_check_dp')
 def check_dp():
-    recall_data()
+    box = recall_data()
+    public_box = [box[0],box[1]]
     if fingerAuth:
         if public_box != [1,1]:
             return render_template('Deposit_Public_Available.html')  
@@ -186,7 +191,8 @@ def check_dp():
     
 @app.route('/box_check_public_deposit', methods = ['GET','POST'])
 def public_deposit():
-    recall_data()
+    box = recall_data()
+    public_box = [box[0],box[1]]
     if fingerAuth:
         if request.method == 'GET':
             return json.dumps(public_box)
@@ -195,7 +201,8 @@ def public_deposit():
     
 @app.route('/box_check_pp')
 def check_pp():
-    recall_data()
+    box = recall_data()
+    private_box = [box[2],box[3]]
     if fingerAuth:
         if private_box != [1,1]:
             return render_template('get_drawer_private.html')
@@ -206,16 +213,24 @@ def check_pp():
 
 @app.route('/get_drawer_private', methods = ['POST'])
 def getDrawerPrivate():
-    recall_data()
+    global t1getprv
+    box = recall_data()
+    private_box = [box[2],box[3]]
 #    private_box = [0,0]
     if fingerAuth == 1:
         if request.method == 'POST':
             if private_box[0] == 0:
+                t1getprv = time.time()
                 go_to_locker(3)
+                t2 = time.time()
+                print('private box run time: ', t2-t1getprv)
                 return render_template('place_item_private.html') #return page GUI
     #            
             elif private_box[1] == 0:
+                t1getprv = time.time()
                 go_to_locker(4)
+                t2 = time.time()
+                print('private box run time: ', t2-t1getprv)
                 return render_template('place_item_private.html') #return page GUI
         return('error')
     else:
@@ -224,32 +239,48 @@ def getDrawerPrivate():
 @app.route('/return_drawer_private', methods = ['POST'])
 def returnDrawerPrivate():
     global fingerAuth
-    recall_data()
+    global Username
+    global returnBoxState
+    global interrupt
+    global t1prv
+    box = recall_data()
+    private_box = [box[2],box[3]]
 #    private_box = [0,0]
     if fingerAuth == 1:
         if request.method == 'POST':
             if private_box[0] == 0:
+                t1prv = time.time() 
                 returnpos_to_locker(3)
-                sleep(1)
-                go_home()
-                sleep(1)
-                prepare_pos()
-                rewrite_data(3,'1')
-                recall_data()
-                returnBoxState = 0
-                fingerAuth = 0
-                return render_template('welcome.html')
+                if not interrupt:
+                    sleep(1)
+                    go_home()
+                    sleep(1)
+                    prepare_pos()
+                    rewrite_data(Username, 3,'1')
+                    box = recall_data()
+                    returnBoxState = 0
+                    fingerAuth = 0
+                    t2 = time.time()
+                    print('return private box runtime: ', t2-t1prv)
+                    return redirect(url_for('home'))
+                    # return render_template('welcome.html')
                 
             elif private_box[1] == 0:
+                t1prv = time.time()
                 returnpos_to_locker(4)
-                sleep(1)
-                go_home()
-                prepare_pos()
-                rewrite_data(4,'1')
-                recall_data()
-                returnBoxState = 0
-                fingerAuth = 0
-                return render_template('welcome.html')
+                if not interrupt:
+                    sleep(1)
+                    go_home()
+                    sleep(1)
+                    prepare_pos()
+                    rewrite_data(Username, 4,'1')
+                    box = recall_data()
+                    returnBoxState = 0
+                    fingerAuth = 0
+                    t2 = time.time()
+                    print('return private box runtime: ', t2-t1prv)
+                    return redirect(url_for('home'))
+                    # return render_template('welcome.html')
         return ('error')
     else:
         return redirect(url_for('home'))
@@ -259,6 +290,8 @@ def interrupt_drawers_private():
     if fingerAuth:
         if request.method == 'POST':
             inter()
+            t2 = time.time()
+            print('private box interrupt runtime: ', t2 - t1getprv)
             return redirect(url_for('WithdrawOrDeposit'))
         return('wow')
     else:
@@ -266,9 +299,16 @@ def interrupt_drawers_private():
 
 @app.route('/interrupt_drawer_return_private', methods=['POST'])
 def interrupt_drawers_return_private():
+    global interrupt
+    global returnBoxState
     if fingerAuth:
         if request.method == 'POST':
+            interrupt = 1
             inter()
+            interrupt = 0
+            returnBoxState = 0
+            t2 = time.time()
+            print('return private box interrupt runtime: ', t2-t1prv)
             return render_template('place_item_private.html')
     else:
         return redirect(url_for('home'))
@@ -276,7 +316,8 @@ def interrupt_drawers_return_private():
 
 @app.route('/box_check_private_deposit', methods = ['GET','POST'])
 def private_deposit():
-    recall_data()
+    box = recall_data()
+    private_box = [box[2],box[3]]
     if fingerAuth:
         if request.method == 'GET':        
             return json.dumps(private_box)
@@ -285,7 +326,10 @@ def private_deposit():
     
 @app.route('/name_withdrawal', methods = ['GET'])
 def nameWithdrawal():
-    recall_data()
+    global box
+    box = recall_data()
+    box = withdraw_data(Username)
+    print(box)
     if fingerAuth:
         if request.method == 'GET':
             return json.dumps(box)
@@ -297,9 +341,6 @@ def enroll_():
     global fingerData
     global register_name
     if request.method == 'POST':
-#        name2 = request.form['num2']
-#        print(name2)
-#        if name2 == '1':
         fingerData = enroll()
         if fingerData != (-1):
             print(fingerData)
@@ -345,27 +386,96 @@ def getRegisterName():
         return render_template('fingerprint_register.html')
     
 @app.route('/weight_check_private', methods = ['POST'])
-def check_weight():
+def check_weight_private():
+    global returnBoxState
     if fingerAuth:
         if request.method == 'POST':
             if checkWeight():
                 if not returnBoxState:
                     returnBoxState = 1
-                    return render_template('return_drawer_private.html')
-                else:return
+#                    return render_template('return_drawer_private.html')
+                    return redirect(url_for('ReturnItemPrivate'))
+                else:
+                    return('')
     else:
         return redirect(url_for('home'))
     
 @app.route('/buttonpressed_private', methods = ['POST'])
-def button_pressed():
+def button_pressed_private():
+    global returnBoxState
     if fingerAuth == 1:
         if request.method == 'POST':
             if not returnBoxState:
+                #checkWeight(0)
+                #weightInter()
                 returnBoxState = 1
-                return render_template('return_drawer_private.html')
+#                return render_template('return_drawer_private.html')
+                return redirect(url_for('ReturnItemPrivate'))
+            else:
+                return('')
     else:
         return redirect(url_for('home'))
-        
+    
+@app.route('/weight_check_withdraw', methods = ['POST'])
+def check_weight_withdraw():
+    global returnBoxState
+    if fingerAuth:
+        if request.method == 'POST':
+            if checkWeight():
+                if not returnBoxState:
+                    returnBoxState = 1
+#                    return render_template('return_drawer_withdraw.html')
+                    return redirect(url_for('ReturnItemWithdraw'))
+                else:
+                    return('')
+    else:
+        return redirect(url_for('home'))
+    
+@app.route('/buttonpressed_withdraw', methods = ['POST'])
+def button_pressed_withdraw():
+    global returnBoxState
+    if fingerAuth == 1:
+        if request.method == 'POST':
+            if not returnBoxState:
+                #weightInter()
+                returnBoxState = 1
+                return redirect(url_for('ReturnItemWithdraw'))
+#                return render_template('return_drawer_withdraw.html.html')
+            else:
+                return ('')
+    else:
+        return redirect(url_for('home'))
+
+@app.route('/weight_check_deposit', methods = ['POST'])
+def check_weight_deposit():
+    global returnBoxState
+    if fingerAuth:
+        if request.method == 'POST':
+            if checkWeight():
+                if not returnBoxState:
+                    returnBoxState = 1
+                    return redirect(url_for('ReturnItem'))
+#                    return render_template('return_drawer_private.html')
+                else:
+                    return ('')
+    else:
+        return redirect(url_for('home'))
+    
+@app.route('/buttonpressed_deposit', methods = ['POST'])
+def button_pressed_deposit():
+    global returnBoxState
+    if fingerAuth == 1:
+        if request.method == 'POST':
+            if not returnBoxState:
+                #weightInter()
+                returnBoxState = 1
+                return redirect(url_for('ReturnItem'))
+#                return render_template('return_drawer_private.html')
+            else:
+                return('')
+    else:
+        return redirect(url_for('home'))
+    
 @app.route('/getDataPublic', methods = ['POST'])
 def get_data():
     if fingerAuth == 1:
@@ -381,14 +491,16 @@ def get_data():
 @app.route('/get_drawer', methods=['POST'])
 def get_drawers():
     global data
+    global t1getpub
     print(data)
     print(type(data))
     if fingerAuth == 1:
         if request.method == 'POST':
+            t1getpub = time.time()
             data = int(data)
-    #        name = request.form['getdrawer']
-    #        print(name)
             go_to_locker(data)
+            t2 = time.time()
+            print('get public box runtime: ', t2-t1getpub)
             return render_template('Place_item.html')  
         return(str(data))
     else:
@@ -398,21 +510,29 @@ def get_drawers():
 def return_drawers():
     global data
     global fingerAuth
+    global Username
+    global returnBoxState
+    global t1returnpub
     print(data)
     print(type(data))
     if fingerAuth == 1:
         if request.method == 'POST':
+            t1returnpub = time.time()
             data = int(data)
             print(data)
             returnpos_to_locker(data)
-            sleep(1)
-            go_home()
-            prepare_pos()
-            rewrite_data(data,'1')
-            recall_data()
-            fingerAuth = 0
-            returnBoxState = 0
-            return redirect(url_for('home'))
+            if not interrupt:
+                sleep(1)
+                go_home()
+                sleep(1)
+                prepare_pos()
+                rewrite_data('' ,data , '1')
+                box = recall_data()
+                fingerAuth = 0
+                returnBoxState = 0
+                t2 = time.time()
+                print('return public box runtime: ',t2-t1returnpub)
+                return redirect(url_for('home'))
 #            return render_template('welcome.html')
     else:
         return redirect(url_for('home'))
@@ -422,6 +542,9 @@ def interrupt_drawers():
     if fingerAuth:
         if request.method == 'POST':
             inter()
+            returnBoxState = 0
+            t2 = time.time()
+            print('get public box interrupt runtime: ', t2-t1getpub)
             return redirect(url_for('WithdrawOrDeposit'))
         return('wow')
     else:
@@ -429,9 +552,16 @@ def interrupt_drawers():
 
 @app.route('/interrupt_drawer_return', methods=['POST'])
 def interrupt_drawers_return():
+    global interrupt
+    global returnBoxState
     if fingerAuth:
         if request.method == 'POST':
+            interrupt = 1
             inter()
+            interrupt = 0
+            returnBoxState = 0
+            t2 = time.time()
+            print('return public box interrupt runtime: ', t2-t1returnpub)
             return render_template('Place_item.html')
     else:
         return redirect(url_for('home'))
@@ -439,7 +569,7 @@ def interrupt_drawers_return():
 @app.route('/getWithdrawData', methods=['POST'])
 def get_withdraw_data():
     if fingerAuth == 1:
-        if request.method == 'POST': 
+        if request.method == 'POST':
             global withdrawdata
             withdrawdata=request.form['withdrawdata']
             print(withdrawdata)
@@ -449,15 +579,16 @@ def get_withdraw_data():
     
 @app.route('/getWithdrawDrawer', methods=['POST'])
 def get_withdraw_drawer():
+    global t1getwithdraw
     global withdrawdata
     print(withdrawdata)
     if fingerAuth == 1:
         if request.method == 'POST':
-            t1 = time.time()
+            t1getwithdraw = time.time()
             withdrawdata = int(withdrawdata)
             go_to_locker(withdrawdata)
             t2 = time.time()
-            print("time from locker to return pos : ", t2-t1)
+            print("get withdraw box runtime: ", t2-t1getwithdraw)
             return render_template('place_item_withdraw.html')
     else:
         return redirect(url_for('home'))
@@ -466,25 +597,30 @@ def get_withdraw_drawer():
 def return_drawers_withdraw():
     global fingerAuth
     global withdrawdata
+    global Username
+    global returnBoxState
+    global interrupt
+    global t1returnwithdraw
     print(withdrawdata)
     print(type(withdrawdata))
     if fingerAuth == 1:
         if request.method == 'POST':
-            t1 = time.time()
+            t1returnwithdraw = time.time()
             withdrawdata = int(withdrawdata)
             print(withdrawdata)
             returnpos_to_locker(withdrawdata)
-            sleep(1)
-            go_home()
-            sleep(1)
-            prepare_pos()
-            rewrite_data(withdrawdata,'0')
-            recall_data()
-            fingerAuth = 0
-            returnBoxState = 0
-            t2 = time.time()
-            print("time return pos to prepare : ", t2-t1)
-            return redirect(url_for('home'))
+            if not interrupt:
+                sleep(1)
+                go_home()               
+                sleep(1)
+                prepare_pos()
+                rewrite_data('',withdrawdata,'0')
+                box = recall_data()
+                fingerAuth = 0
+                returnBoxState = 0
+                t2 = time.time()
+                print("return withdraw box runtime: ", t2-t1returnwithdraw)
+                return redirect(url_for('home'))
     else:
         return redirect(url_for('home'))
 
@@ -493,6 +629,8 @@ def interrupt_drawers_withdraw():
     if fingerAuth:
         if request.method == 'POST':
             inter()
+            t2 = time.time()
+            print('get withdraw box interrupt runtime: ', t2-t1getwithdraw)
             return redirect(url_for('WithdrawOrDeposit'))
         return('wow')
     else:
@@ -500,9 +638,16 @@ def interrupt_drawers_withdraw():
 
 @app.route('/interrupt_drawer_return_withdraw', methods=['POST'])
 def interrupt_drawers_return_withdraw():
+    global returnBoxState
+    global interrupt
     if fingerAuth:
         if request.method == 'POST':
+            interrupt = 1
             inter()
+            interrupt = 0
+            returnBoxState = 0
+            t2 = time.time()
+            print('return withdraw box interrupt runtime: ', t2-t1returnwithdraw)
             return render_template('place_item_withdraw.html')
     else:
         return redirect(url_for('home'))
