@@ -44,26 +44,6 @@ def findData(searchFingerID):
                 print(line[1])
                 break
 
-def removeData():
-
-    updatedlist=[]
-    with open(filename,newline="") as f:
-      reader=csv.reader(f)
-      username=input("Enter the username of the user you wish to remove from file:")
-      for row in reader: 
-                if row[1]!=username: 
-                    updatedlist.append(row) 
-      print(updatedlist)
-      updatefile(updatedlist)
-        
-def updatefile(updatedlist):
-    with open(filename,"w",newline="") as f:
-        Writer=csv.writer(f)
-        Writer.writerows(updatedlist)
-        print("File has been updated")
-        
-
-removeData()
 
     
 
