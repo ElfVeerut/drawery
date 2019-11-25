@@ -38,13 +38,7 @@ def findUsernameData(searchFingerID):
                 return (line[1])
                 #break
 
-
-
-    
-
-    
-
-print('Done')
+#print('Done')
 #writeHead()
 #writeData('elf', '4')
 #findData('4')
