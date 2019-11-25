@@ -23,8 +23,8 @@ def cleanAndExit():
     print("Bye!")
     sys.exit()
 
-hx = HX711(5, 6)
-# If you're experiencing super random values, change these values to MSB or LSB until to get more stable values.
+hx = HX711(9, 11)
+
 # The first parameter is the order in which the bytes are used to build the "long" value.
 # The second paramter is the order of the bits inside each byte.
 hx.set_reading_format("MSB", "MSB")
@@ -42,6 +42,8 @@ hx.reset()
 hx.tare()
 
 def checkWeight():
+    global interrupt
+    interrupt = 1
     while True:
     # to use both channels
     #hx.tare_A()
@@ -55,24 +57,43 @@ def checkWeight():
         # np_arr8_string = hx.get_np_arr8_string()
         # binary_string = hx.get_binary_string()
         # print binary_string + " " + np_arr8_string
-            while True:
+            while interrupt:
                 weight = []
                 count = 0
+                if interrupt == 0:
+                    cleanAndExit()
                 for _ in range(15):
-                    val = max(0, int(hx.get_weight(5)))
+                    val = max(0, int(hx.get_weight(9)))
+                    if interrupt == 0:
+                        cleanAndExit()
                     weight.append(val)
                     print(weight)
+                    print(interrupt)
+#                    time.sleep(1)
                 #print(weight)
                 check = weight[0]
                 for i in weight:
-                    if i > check + 5 or i < check-5: break
+                    if interrupt == 0:
+                        cleanAndExit()
+                    if i > check + 10 or i < check-10: break
                     count += 1
+                    #time.sleep(0.5)
                 if count == 15:
                     return True
             hx.power_down()
             hx.power_up()
-            time.sleep(1)
+            time.sleep(0.7)
 
         except (KeyboardInterrupt, SystemExit):
             cleanAndExit()
-
+            
+def weightInter():
+    global interrupt
+    print('stop na')
+    #cleanAndExit()
+    interrupt = 0
+#def checkKorng():
+    #if checkWeight() == 
+            
+#checkWeight(1)
+#checkKorng()
