@@ -3,24 +3,34 @@ from tkinter import font
 HEIGHT = 417
 WIDTH = 626
 root = tk.Tk()
-data = {'elf':{'W':{'box1':[{'03.12.2019':['18.00','18.05']}],'box2':[],'box3':[],'box4':[]},
-               'D':{'box1':[3,4],'box2':[],'box3':[],'box4':[]}
-              }
-        ,
-        'dear':{'W':{'box1':[5,6],'box2':[],'box3':[],'box4':[]},
-               'D':{'box1':[7,8],'box2':[],'box3':[],'box4':[]}
-              }
-              }
-def find_cmd(user_in):
-    try:
-        form = [name,w_d,box]
-        a = user_in.split(' ')
-        if len(a) == 1:
-            return data[a]
+data = {'elf':[{"W":
+                   [
+                    {"box1":["DATE&TIME-1-W","DATE&TIME-2-W"]},
+                    {"box2":["DATE&TIME-1-W","DATE&TIME-2-W"]},
+                    {"box3":["DATE&TIME-1-W","DATE&TIME-2-W"]},
+                    {"box4":["DATE&TIME-1-W","DATE&TIME-2-W"]}
+                   ]   
+               },
+                {"D":
+                   [
+                    {"box1":["DATE&TIME-1-D","DATE&TIME-2-D"]},
+                    {"box2":["DATE&TIME-1-D","DATE&TIME-2-D"]},
+                    {"box3":["DATE&TIME-1-D","DATE&TIME-2-D"]},
+                    {"box4":["DATE&TIME-1-D","DATE&TIME-2-D"]}
+                   ]
+                }
+                ]
 
-            
+        }
+def find_cmd(user_in):
+    try :
+        text = user_in.split(" ")
+        print(text)
     except:
-        return False
+        print(user_in)
+        final_str = str('USERNAME NOT IN DATA')
+
+    label['text'] = final_str
 canvas = tk.Canvas(root, height=HEIGHT,width=WIDTH)
 canvas.pack()
 
@@ -40,18 +50,11 @@ button.place(relx=0.7,relheight=1, relwidth=0.3)
 lower_frame = tk.Frame(root, bg='#80c1ff',bd=10)
 lower_frame.place(relx=0.5, rely=0.25, relwidth=0.75,relheight=0.6, anchor='n')
 
-label = tk.Label(lower_frame,font=('Courier',14),anchor='nw',justify='left',bd=4)
-label.place(relwidth=1, relheight=1)
-root.mainloop()
+label = tk.Label(lower_frame,font=('Courier',12),anchor='nw',justify='left',bd=4)
+label.place(relwidth=0.5, relheight=0.5)
 
-# try :
-#     info = user_in.split(' ')
-#     if len(info) == 1:
-#         label['text'] = data[user_in]
-#     elif len(info) == 2:
-#         label['text'] = data[info[0].lower()][info[1].upper()]
-#     elif len(info) == 3:
-#         label['text'] = data[info[0].lower()][info[1].upper()][info[2].lower()]
-# except:
-#     print(user_in)
-#     label['text'] = str('NO USERNAME IN DATA')
+label2 = tk.Label(lower_frame,font=('Courier',12),anchor='nw',justify='left',bd=4)
+label2.place(relwidth=0.5, relheight=0.5,relx=0.5,rely=0.5)
+
+
+root.mainloop()
