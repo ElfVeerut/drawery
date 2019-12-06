@@ -6,7 +6,10 @@ root = tk.Tk()
 HEIGHT = int(root.winfo_screenheight())
 WIDTH = int(root.winfo_screenwidth())
 data = read_stat_Data()
+data_box_form = read_stat_box_Data()
+# data_box_form = {"box1":[{"W":[{'name':[1,2]},{'name2':[3,4]}]},{"D":[{'name':[3,4]}]}],}
 print(data)
+print(data_box_form)
 
 
 def find_cmd(user_in):
@@ -16,26 +19,48 @@ def find_cmd(user_in):
     try:
         for i in range(len(lst_word)):
             if i==0:
-                    data_w = data[name][0]['box1'][0]["W"]
-                    data_d = data[name][0]['box1'][1]["D"]
-                    data_w2 = data[name][1]['box2'][0]["W"]
-                    data_d2 = data[name][1]['box2'][1]["D"]
-                    data_w3 = data[name][2]['box3'][0]["W"]
-                    data_d3 = data[name][2]['box3'][1]["D"]
-                    data_w4 = data[name][3]['box4'][0]["W"]
-                    data_d4 = data[name][3]['box4'][1]["D"]
-                    final_str = "box {0} withdraw =  {1} \n      deposit  = {2}".format("1", data_w, data_d)
-                    final_str2 = "box {0} withdraw = {1} \n      deposit  = {2}".format("2", data_w2, data_d2)
-                    final_str3 = "box {0} withdraw = {1} \n      deposit  = {2}".format("3", data_w3, data_d3)
-                    final_str4 = "box {0} withdraw = {1} \n      deposit  = {2}".format("4", data_w4, data_d4)
+                    if "box" in lst_word[i].lower():
+                        print(len(data_box_form[lst_word[0].lower()][0]["W"]))
+                        if len(data_box_form[lst_word[0].lower()][0]) == 0:
+                            final_str = ' '
+                            final_str2 = ' '
+                            final_str3 = ' '
+                            final_str4 = ' '
+
+
+                        # for i in range(len (data_box_form[lst_word[0].lower()][0]["W"])):
+                        elif len(data_box_form[lst_word[0].lower()][0]) > 0:
+                            if len(data_box_form[lst_word[0].lower()][0]["W"]) != 0:
+                                final_str = "withdraw = \n  {0} ".format(str(data_box_form[lst_word[0].lower()][0]["W"][-1]))
+                            else: final_str = 'withdraw ='
+                            final_str2 = ' '
+                            final_str4 = ' '
+                            if len(data_box_form[lst_word[0].lower()][1]["D"])!=0:
+                                final_str3 = "deposit = \n  {0}" .format(str(data_box_form[lst_word[0].lower()][1]["D"][-1]))
+                            else: final_str3 = 'withdraw ='
+                    else:
+                        data_w = data[name][0]['box1'][0]["W"]
+                        data_d = data[name][0]['box1'][1]["D"]
+                        data_w2 = data[name][1]['box2'][0]["W"]
+                        data_d2 = data[name][1]['box2'][1]["D"]
+                        data_w3 = data[name][2]['box3'][0]["W"]
+                        data_d3 = data[name][2]['box3'][1]["D"]
+                        data_w4 = data[name][3]['box4'][0]["W"]
+                        data_d4 = data[name][3]['box4'][1]["D"]
+                        final_str = "box {0} withdraw =  {1} \n      deposit  = {2}".format("1", data_w, data_d)
+                        final_str2 = "box {0} withdraw = {1} \n      deposit  = {2}".format("2", data_w2, data_d2)
+                        final_str3 = "box {0} withdraw = {1} \n      deposit  = {2}".format("3", data_w3, data_d3)
+                        final_str4 = "box {0} withdraw = {1} \n      deposit  = {2}".format("4", data_w4, data_d4)
+
+
             elif i == 1 and not lst_word[i]== "":
-                if lst_word[i].upper() == "W":
+                if lst_word[i].upper() == "W" or lst_word[i].lower() == "withdraw":
                     final_str = "box {0} withdraw = {1}".format("1",data_w)
                     final_str2 = "box {0} withdraw = {1}".format("2",data_w2)
                     final_str3 = "box {0} withdraw = {1}".format("3",data_w3)
                     final_str4 = "box {0} withdraw = {1}".format("4",data_w4)
 
-                elif lst_word[i].upper() == "D":
+                elif lst_word[i].upper() == "D" or lst_word[i].lower() == "deposit":
                     final_str = "box {0} deposit = {1}".format("1",data_d)
                     final_str2 = "box {0} deposit = {1}".format("2",data_d2)
                     final_str3 = "box {0} deposit = {1}".format("3",data_d3)
@@ -81,7 +106,7 @@ def find_cmd(user_in):
         label2['text'] = final_str2
         label3['text'] = final_str2
         label4['text'] = final_str2
-    
+    #
 canvas = tk.Canvas(root, height=HEIGHT,width=WIDTH)
 canvas.pack()
 
