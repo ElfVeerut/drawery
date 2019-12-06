@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import font
-
+ 
 root = tk.Tk()
 HEIGHT = int(root.winfo_screenheight())
 WIDTH = int(root.winfo_screenwidth())
@@ -24,6 +24,7 @@ data = {'elf':[
                ]
 
         }
+
 def find_cmd(user_in):
     lst_word = user_in.split(" ")
     try :
@@ -44,6 +45,10 @@ def find_cmd(user_in):
                 data_w = data[lst_word[i].lower()][3]['box4'][0]["W"]
                 data_d = data[lst_word[i].lower()][3]['box4'][1]["D"]
                 final_str4 = "box {0} withdraw = {1} \n      deposit  = {2}".format("4",data_w,data_d)
+                #
+                # if lst_word[0].lower() in box_data:
+                #
+                #     final_str = "{0} withdraw = {1} \n deposit = {2}".format("")
 
             elif i == 1:
                 if lst_word[i].upper() == "W":
@@ -56,7 +61,7 @@ def find_cmd(user_in):
                     final_str2 = "box {0} deposit = {1}".format("2",data_d)
                     final_str3 = "box {0} deposit = {1}".format("3",data_d)
                     final_str4 = "box {0} deposit = {1}".format("4",data_d)
-                else:
+                elif "box" in lst_word[i]:
                     # print("this :",data[lst_word[0]][0][lst_word[1]])
                     if lst_word[1] == 'box1':
                         final_str2 = " "
@@ -74,14 +79,25 @@ def find_cmd(user_in):
                         final_str = " "
                         final_str2 = " "
                         final_str3 = " "
+                else:
+                    final_str = "ERROR"
+                    final_str2 = " "
+                    final_str3 = " "
+                    final_str4 = " "
+
+
         label['text'] = final_str
         label2['text'] = final_str2
         label3['text'] = final_str3
         label4['text'] = final_str4
     except :
         print(lst_word)
-        final_str = "ERORR 404"
+        final_str = "ERROR 404"
+        final_str2 = ' '
         label['text'] = final_str
+        label2['text'] = final_str2
+        label3['text'] = final_str2
+        label4['text'] = final_str2
     
 canvas = tk.Canvas(root, height=HEIGHT,width=WIDTH)
 canvas.pack()
