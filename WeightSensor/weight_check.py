@@ -37,7 +37,9 @@ hx.reset()
 
 hx.tare()
 
+
 #Nattanita's Code
+# *********************************************************
 
 def checkWeight():
     global interrupt
@@ -83,8 +85,5 @@ def weightInter():
     print('stop na')
     #cleanAndExit()
     interrupt = 0
-#def checkKorng():
-    #if checkWeight() == 
-            
-#checkWeight(1)
-#checkKorng()
+
+# ***********************************************************
