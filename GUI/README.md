@@ -10,4 +10,4 @@ get_drawer.html,
 get_drawer_deposit.html,
 get_drawer_private.html,
 get_drawer_withdraw.html,
-namebox.html,
+namebox.html
