@@ -1,9 +1,6 @@
+#written by Veerut H. 61011356
 from flask import Flask, redirect, url_for, request, render_template, jsonify, request
 import ast, json, os, webbrowser, csv
-#import flask_sqlalchemy import SQLAlchemy
-#from flask_security import Security, SQLAlchemyUserDatastore, login_required, \
-#   UserMixin
-#from flask_security.utils import hash_password
 from time import sleep
 from enrollm1 import enroll
 from checkm1 import check
