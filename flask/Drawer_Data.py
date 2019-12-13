@@ -1,3 +1,4 @@
+#This file was written by Veerut H. and Nattanita A.
 import csv
 
 filename = "new_finger_track.csv"
